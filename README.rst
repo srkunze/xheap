@@ -89,6 +89,7 @@ Bad
 - needs fix:
 
   - decrease-key and increase-key seem to be another important missing use-case of heapq_; so, I will dig into that as well
+  - merge heaps
 
 - ideas are welcome :-)
 
