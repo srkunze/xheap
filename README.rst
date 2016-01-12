@@ -1,0 +1,92 @@
+XHEAP_
+======
+
+It's like heapq_. Fast but it's object-oriented and has more features.
+
+
+Why?
+----
+
+Less code.
+Fast Removal (with and without known index).
+No need to re-invent the wheel.
+
+
+How?
+----
+
+Before:
+
+.. code:: python
+
+    import heapq
+
+    heap = [1234, 12]
+    heapq.heapify(heap)
+    heapq.heappush(heap, 55)
+    print(heapq.heappop(heap))
+
+After:
+
+.. code:: python
+
+    from xheap import Heap
+
+    heap = Heap([1234, 12])
+    heap.push(55)
+    print(heap.pop())
+
+
+About that removal of items ...
+-------------------------------
+
+Imagine an priority queue of tasks. Imagine you need to remove an arbitrary item from a heap. Just call ``remove``.
+
+.. code:: python
+
+    heap = Heap([4, 3, 7, 6, 1, 2, 9, 8, 0, 5])
+    heap.remove(6)
+
+If you know the item's index, you can use ``pop``.
+
+.. code:: python
+
+    heap = Heap([4, 3, 7, 6, 1, 2, 9, 8, 0, 5])
+    heap.remove(3)
+
+
+Max-Heap or Min-Heap?
+---------------------
+
+**You define the order of items.** Just imagine two heaps of the very same set of items but you need
+different sorting for each heap. So, you define what means min or what mean max; via ``cmp``.
+
+.. code:: python
+
+    heap = Heap([4, 3, 7, 6, 1, 2, 9, 8, 0, 5], cmp=lambda x, y: x-30 >= 4*y)
+
+
+Conclusion
+----------
+
+Good
+****
+
+- OO
+- can remove items from within the heap
+- can remove items with unknown index
+- sorting defined per heap (falls back to Pythonic ``<=``)
+- works with Python2 and Python3
+
+Bad
+***
+
+- needs fix:
+
+  - decrease-key and increase-key seem to be another important missing use-case of heapq_; so, I will dig into that as well
+
+- ideas are welcome :-)
+
+
+.. _XHEAP: https://pypi.python.org/pypi/xheap
+.. _heapq: https://docs.python.org/3.5/library/heapq.html
