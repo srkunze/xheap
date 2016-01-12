@@ -42,7 +42,7 @@ After:
 About that removal of items ...
 -------------------------------
 
-Imagine a priority queue of tasks. Say, you need to remove an arbitrary item from a heap. Just call ``remove``.
+Imagine a priority queue of tasks. Say, you need to remove an arbitrary item from it. Just call ``remove``.
 
 .. code:: python
 
@@ -54,7 +54,7 @@ If you know the item's index, you can use ``pop``.
 .. code:: python
 
     heap = Heap([4, 3, 7, 6, 1, 2, 9, 8, 0, 5])
-    heap.remove(3)
+    heap.pop(3)
 
 
 Max-Heap or Min-Heap?
