@@ -1,14 +1,16 @@
 XHEAP_
 ======
 
-It's like heapq_. Fast but it's object-oriented and has more features.
+It's like heapq_ (which is blazingly fast) but it's object-oriented and has more features.
 
 
 Why?
 ----
 
 Less code.
+
 Fast Removal (with and without known index).
+
 No need to re-invent the wheel.
 
 
