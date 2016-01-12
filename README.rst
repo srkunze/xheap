@@ -9,7 +9,7 @@ Why?
 
 Less code.
 
-Fast Removal (with and without known index).
+Easy Removal.
 
 No need to re-invent the wheel.
 
@@ -42,7 +42,7 @@ After:
 About that removal of items ...
 -------------------------------
 
-Imagine an priority queue of tasks. Imagine you need to remove an arbitrary item from a heap. Just call ``remove``.
+Imagine a priority queue of tasks. Say, you need to remove an arbitrary item from a heap. Just call ``remove``.
 
 .. code:: python
 
