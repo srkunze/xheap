@@ -65,7 +65,9 @@ different sorting for each heap. So, you define what means min or what mean max;
 
 .. code:: python
 
-    heap = Heap([4, 3, 7, 6, 1, 2, 9, 8, 0, 5], cmp=lambda x, y: x-30 >= 4*y)
+    items = [date(2015, 1, 1), date(2015, 1, 2),  date(2015, 1, 3)]
+    order1 = Heap(items, cmp=lambda x, y: x.day <= y.day)
+    order2 = Heap(items, cmp=lambda x, y: x.weekday() >= y.weekday())
 
 
 Conclusion
