@@ -1,15 +1,5 @@
 # -*- coding: utf-8 -*-
 
-"""
-Copies from heapq in order to:
-1) add remove_by_index -> not as easy as you think
-2) add remove_by_item -> heapq does not provide O(log n) for this
-3) provide oo implementation
-4) comparison is heap-specific (i.e. the same set of items might compare differently on different heaps -> max, min etc.)
-5) shorter calls
-6) checking invariant
-"""
-
 from __future__ import unicode_literals
 
 import heapq
@@ -49,29 +39,6 @@ class Heap(list):
     def remove(self, item):
         return self.pop(self._indexes.pop(item))
 
-    def replace(self, item):
-        """Pop and return the current smallest value, and add the new item.
-
-        This is more efficient than heappop() followed by heappush(), and can be
-        more appropriate when using a fixed-size heap.  Note that the value
-        returned may be larger than item!  That constrains reasonable uses of
-        this routine unless written as part of a conditional replacement:
-
-            if item > heap[0]:
-                item = heapreplace(heap, item)
-        """
-        returnitem = self[0]    # raises appropriate IndexError if heap is empty
-        self[0] = item
-        self._siftup(0)
-        return returnitem
-
-    def pushpop(self, item):
-        """Fast version of a heappush followed by a heappop."""
-        if self and self.cmp(self[0], item):
-            item, self[0] = self[0], item
-            self._siftup(0)
-        return item
-
     def check_invariant(self):
         for index in range(len(self)-1, 0, -1):
             parent_index = (index-1) >> 1
@@ -93,6 +60,16 @@ class Heap(list):
     def __repr__(self):
         return 'Heap({content})'.format(content=super(Heap, self).__repr__())
 
+    # functions below shamelessly copied/embedded from heapq.
+
+    def replace(self, item):
+        heapq.heapreplace(self, item)
+
+    def pushpop(self, item):
+        heapq.heappushpop(self, item)
+
+    def nlargest
+
     def _siftdown(*args):
         heapq._siftdown(*args)
 
@@ -106,7 +83,6 @@ class Heap(list):
 
 if __name__ == "__main__":
     # Simple sanity test
-
     heap = Heap([1, 3, 5, 7, 9, 2, 4, 6, 8, 0])
     heap.heapify()
     print(heap)
@@ -118,4 +94,4 @@ if __name__ == "__main__":
     while heap:
         heap.check_invariant()
         sort.append(heap.pop())
-    print sort
+    print(sort)
