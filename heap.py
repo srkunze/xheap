@@ -60,15 +60,13 @@ class Heap(list):
     def __repr__(self):
         return 'Heap({content})'.format(content=super(Heap, self).__repr__())
 
-    # functions below shamelessly copied/embedded from heapq.
+    # Functions below embedded shamelessly from heapq.
 
     def replace(self, item):
         heapq.heapreplace(self, item)
 
     def pushpop(self, item):
         heapq.heappushpop(self, item)
-
-    def nlargest
 
     def _siftdown(*args):
         heapq._siftdown(*args)
