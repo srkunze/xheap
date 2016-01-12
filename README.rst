@@ -61,7 +61,7 @@ Max-Heap or Min-Heap?
 ---------------------
 
 **You define the order of items.** Just imagine two heaps of the very same set of items but you need
-different sorting for each heap. So, you define what means min or what mean max; via ``cmp``.
+different sorting for each heap. So, you define what min and max means, via ``cmp``.
 
 .. code:: python
 
