@@ -4,7 +4,7 @@ from setuptools import setup
 
 setup(
     name='xheap',
-    version='0.1',
+    version='0.2',
     description='heapq + OO + remove',
     author='Sven R. Kunze',
     author_email='srkunze@mail.de',
