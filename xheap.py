@@ -5,6 +5,9 @@ from __future__ import unicode_literals
 import heapq
 
 
+__all__ = ['Heap', 'InvalidHeapError']
+
+
 class Heap(list):
     """
     Heap Invariant: a[k] <= a[2*k+1] and a[k] <= a[2*k+2]
