@@ -35,17 +35,17 @@ After:
     print(heap.pop())
 
 
-About that removal of items ...
--------------------------------
+Even more interesting: remove
+-----------------------------
 
-Imagine a priority queue of tasks. Say, you need to remove an arbitrary item from it. Just call ``remove``.
+Imagine a priority queue of tasks where tasks can be cancelled. Just call ``remove`` in this case.
 
 .. code:: python
 
     heap = Heap([4, 3, 7, 6, 1, 2, 9, 8, 0, 5])
     heap.remove(6)
 
-If you know the item's index, you can use ``pop``.
+A heap is basically a list. So, if you know the index, you can use ``pop`` instead.
 
 .. code:: python
 
