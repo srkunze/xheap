@@ -47,7 +47,7 @@ class Heap(list):
             break
         else:
             return
-        raise Exception('heap invariant (heap[{parent_index}] <= heap[{index}]) violated: {parent} !<= {item}'.format(parent=self[parent_index], parent_index=parent_index, item=self[index], index=index))
+        raise InvalidHeapError('heap invariant (heap[{parent_index}] <= heap[{index}]) violated: {parent} !<= {item}'.format(parent=self[parent_index], parent_index=parent_index, item=self[index], index=index))
 
     def __setitem__(self, key, value):
         self._indexes[value] = key
@@ -79,17 +79,5 @@ class Heap(list):
         heapq.heapify(self)
 
 
-if __name__ == "__main__":
-    # Simple sanity test
-    heap = Heap([1, 3, 5, 7, 9, 2, 4, 6, 8, 0])
-    heap.heapify()
-    print(heap)
-    heap.remove(6)
-    heap.remove(2)
-    heap.check_invariant()
-    print(heap)
-    sort = []
-    while heap:
-        heap.check_invariant()
-        sort.append(heap.pop())
-    print(sort)
+class InvalidHeapError(RuntimeError):
+    pass
