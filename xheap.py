@@ -40,7 +40,9 @@ class Heap(list):
         return returnitem
 
     def remove(self, item):
-        return self.pop(self._indexes.pop(item))
+        index = self._indexes.pop(item)
+        self.pop(index)
+        return index
 
     def check_invariant(self):
         for index in range(len(self)-1, 0, -1):

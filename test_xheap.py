@@ -11,7 +11,7 @@ class MyTestCase(unittest.TestCase):
 
     def test___init__(self):
         self.assertSetEqual(set(), set(Heap()))
-        self.assertSetEqual(set(range(100)), set(Heap(range(100))))
+        self.assertSetEqual(set(range(100)), set(Heap(Heap(range(99, -1, -1)))))
 
     def test_push(self):
         heap = Heap()
@@ -20,12 +20,34 @@ class MyTestCase(unittest.TestCase):
             heap.check_invariant()
         self.assertSetEqual(set(range(100)), set(heap))
 
-    def test_pop(self):
-        heap = Heap(range(100))
+    def test_pop_first(self):
+        heap = Heap(range(99, -1, -1))
+        sorted_items = []
         for i in range(100):
-            self.assertEqual(i, heap.pop())
+            popped_item = heap.pop()
             heap.check_invariant()
+            self.assertEqual(i, popped_item)
+            sorted_items.append(popped_item)
+        self.assertSequenceEqual(range(100), sorted_items)
         self.assertSetEqual(set(), set(heap))
+
+    def test_pop_middle(self):
+        heap = Heap(range(99, -1, -1))
+        self.assertEqual(88, heap.pop(50))
+        self.assertEqual(99, len(heap))
+        heap.check_invariant()
+
+    def test_pop_last(self):
+        heap = Heap(range(99, -1, -1))
+        self.assertEqual(75, heap.pop(99))
+        self.assertEqual(99, len(heap))
+        heap.check_invariant()
+
+    def test_remove(self):
+        heap = Heap(range(99, -1, -1))
+        self.assertEqual(39, heap.remove(60))
+        self.assertEqual(99, len(heap))
+        heap.check_invariant()
 
     def test_check_invariant(self):
         heap = Heap()
