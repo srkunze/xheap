@@ -75,7 +75,7 @@ If you tinker with a heap you can check whether the heap invariant still holds:
 .. code:: python
 
     heap = Heap([4, 3, 7, 6, 1, 2, 9, 8, 5])
-    heap[3] = 0            # I know what I am doing here
+    heap[3] = 10           # I know what I am doing here
     heap.check_invariant() # but better check... ooops
 
 
