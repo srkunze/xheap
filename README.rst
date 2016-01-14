@@ -1,7 +1,7 @@
 XHEAP_
 ======
 
-It's like heapq_ (i.e. blazingly fast) but it's object-oriented and has more features.
+It's like heapq_ (i.e. blazingly fast) but object-oriented + more features.
 
 
 Why?
@@ -19,10 +19,10 @@ Before:
 
     import heapq
 
-    heap = [1234, 12]
+    heap = [3, 6, 8, 2, 1, 9, 5]
     heapq.heapify(heap)
-    heapq.heappush(heap, 55)
-    print(heapq.heappop(heap))
+    heapq.heappush(heap, 4)
+    heapq.heappop(heap)     # returns 1
 
 After:
 
@@ -30,27 +30,37 @@ After:
 
     from xheap import Heap
 
-    heap = Heap([1234, 12])
-    heap.push(55)
-    print(heap.pop())
+    heap = Heap([3, 6, 8, 2, 1, 9, 5])
+    heap.push(4)
+    heap.pop()              # returns 1
 
 
-Even more interesting: remove
------------------------------
+What are heaps good for anyway?
+-------------------------------
+
+They are fast. Supposed you have a heap, then use ``pop`` get the smallest one. Heapsort_ works this way.
+
+.. code:: python
+
+    heap = Heap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
+    heap.pop()  # returns A
+    heap.pop()  # returns B
+    heap.pop()  # returns C
+    ...
 
 Imagine a priority queue of tasks where tasks can be cancelled. Just call ``remove`` in this case.
 
 .. code:: python
 
-    heap = Heap([4, 3, 7, 6, 1, 2, 9, 8, 0, 5])
-    heap.remove(6)
+    heap = Heap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
+    heap.remove('L')     # returns the index: 6
 
-A heap is basically a list. So, if you know the index, you can use ``pop`` instead.
+A heap is basically a list. So, if you know the index of the item, you can use ``pop`` instead.
 
 .. code:: python
 
-    heap = Heap([4, 3, 7, 6, 1, 2, 9, 8, 0, 5])
-    heap.pop(3)
+    heap = Heap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
+    heap.pop(6)          # returns the item: L
 
 
 Max-Heap or Min-Heap?
@@ -85,6 +95,7 @@ Conclusion
 Good
 ****
 
+- uses C implementation if available (i.e. fast)
 - object-oriented
 - can remove items from within the heap
 - can remove items with unknown index
@@ -105,3 +116,4 @@ Bad
 
 .. _XHEAP: https://pypi.python.org/pypi/xheap
 .. _heapq: https://docs.python.org/3.5/library/heapq.html
+.. _heapsort: https://en.wikipedia.org/wiki/Heapsort
