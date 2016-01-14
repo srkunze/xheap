@@ -1,7 +1,7 @@
 XHEAP_
 ======
 
-It's like heapq_ (i.e. blazingly fast) but object-oriented + more features.
+It's like heapq_ (blazingly fast) but object-oriented + more features.
 
 
 Why?
@@ -10,35 +10,16 @@ Why?
 Less code.
 
 
-How?
-----
-
-Before:
-
-.. code:: python
-
-    import heapq
-
-    heap = [3, 6, 8, 2, 1, 9, 5]
-    heapq.heapify(heap)
-    heapq.heappush(heap, 4)
-    heapq.heappop(heap)     # returns 1
-
-After:
-
-.. code:: python
-
-    from xheap import Heap
-
-    heap = Heap([3, 6, 8, 2, 1, 9, 5])
-    heap.push(4)
-    heap.pop()              # returns 1
-
-
 What are heaps good for anyway?
 -------------------------------
 
-They are fast. Supposed you have a heap, then use ``pop`` get the smallest one. Heapsort_ works this way.
+They are fast when you need the smallest/biggest item of big collections - Runtime: O(log n).
+
+
+How?
+----
+
+Supposed you have a heap, then use ``pop`` get the smallest one. Heapsort_ works this way.
 
 .. code:: python
 
@@ -48,7 +29,20 @@ They are fast. Supposed you have a heap, then use ``pop`` get the smallest one. 
     heap.pop()  # returns C
     ...
 
-Imagine a priority queue of tasks where tasks can be cancelled. Just call ``remove`` in this case.
+Can I insert an item?
+---------------------
+
+Indeed and it's as fast as pop. Use ``push``.
+
+.. code:: python
+
+    heap.push(3)
+
+
+Can I remove an item from the middle of a heap?
+-----------------------------------------------
+
+Yes, just call ``remove`` in this case.
 
 .. code:: python
 
