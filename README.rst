@@ -32,7 +32,7 @@ Suppose you have a heap, then use ``pop`` get the smallest one. Heapsort_ works 
 Can I insert an item?
 ---------------------
 
-Indeed and it's as fast as pop. Use ``push``.
+Indeed and it's as fast as pop. Use ``push`` for insertion.
 
 .. code:: python
 
