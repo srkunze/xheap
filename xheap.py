@@ -37,12 +37,17 @@ class Heap(list):
                 self._siftup(index)
             else:
                 self._siftdown(0, index)
+        del self._indexes[returnitem]
         return returnitem
 
     def remove(self, item):
-        index = self._indexes.pop(item)
+        index = self._indexes[item]
         self.pop(index)
         return index
+
+    def check(self):
+        self.check_invariant()
+        self.check_indexes()
 
     def check_invariant(self):
         for index in range(len(self)-1, 0, -1):
@@ -54,13 +59,20 @@ class Heap(list):
             return
         raise InvalidHeapError('heap invariant (heap[{parent_index}] <= heap[{index}]) violated: {parent} !<= {item}'.format(parent=self[parent_index], parent_index=parent_index, item=self[index], index=index))
 
+    def check_indexes(self):
+        if self._indexes != self._get_indexes():
+            raise InvalidHeapError('_indexes is broken')
+
+    def _get_indexes(self):
+        return {value: index for index, value in enumerate(self)}
+
     def __setitem__(self, key, value):
         self._indexes[value] = key
         super(Heap, self).__setitem__(key, value)
 
     def __setslice__(self, i, j, sequence):
         super(Heap, self).__setslice__(i, j, sequence)
-        self._indexes = {value: index for index, value in enumerate(self)}
+        self._indexes = self._get_indexes()
 
     def __repr__(self):
         return 'Heap({content})'.format(content=super(Heap, self).__repr__())
@@ -80,8 +92,8 @@ class Heap(list):
         heapq._siftup(*args)
 
     def heapify(self):
-        self._indexes = {value: index for index, value in enumerate(self)}
         heapq.heapify(self)
+        self._indexes = self._get_indexes()
 
 
 class InvalidHeapError(RuntimeError):
