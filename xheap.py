@@ -4,7 +4,8 @@ from __future__ import unicode_literals
 
 import heapq
 
-
+__version__ = '0.4'
+__version_info__ = (0, 4)
 __all__ = ['Heap', 'InvalidHeapError']
 
 
@@ -77,7 +78,7 @@ class Heap(list):
     def __repr__(self):
         return 'Heap({content})'.format(content=super(Heap, self).__repr__())
 
-    # Functions below embedded shamelessly from heapq.
+    # Functions below shamelessly used from heapq.
 
     def replace(self, item):
         heapq.heapreplace(self, item)

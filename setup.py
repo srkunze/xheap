@@ -4,8 +4,8 @@ from setuptools import setup
 
 setup(
     name='xheap',
-    version='0.3',
-    description='heapq + OO + remove',
+    version='0.4',
+    description='Heap Implementation for Python',
     author='Sven R. Kunze',
     author_email='srkunze@mail.de',
     url='https://github.com/srkunze/xheap',
@@ -18,5 +18,5 @@ setup(
     ],
 
     py_modules=['xheap'],
-    install_requires=[]
+    install_requires=[],
 )
