@@ -36,25 +36,26 @@ Indeed and it's as fast as pop. Use ``push`` for insertion.
 
 .. code:: python
 
-    heap.push(3)
+    heap = Heap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
+    heap.push('Z')
 
 
 Can I remove an item from the middle of a heap?
 -----------------------------------------------
 
-Yes, just call ``remove`` in this case.
+Yes, that's what ``remove`` is supposed to do.
 
 .. code:: python
 
     heap = Heap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
-    heap.remove('L')     # returns the index: 6
+    heap.remove('L')     # returns index: 6
 
 A heap is basically a list. So, if you know the index of the item, you can use ``pop`` instead.
 
 .. code:: python
 
     heap = Heap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
-    heap.pop(6)          # returns the item: L
+    heap.pop(6)          # returns item: L
 
 
 Max-Heap or Min-Heap?
