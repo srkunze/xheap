@@ -19,7 +19,7 @@ They are fast when you need the smallest/biggest item of big collections - Runti
 How?
 ----
 
-Supposed you have a heap, then use ``pop`` get the smallest one. Heapsort_ works this way.
+Suppose you have a heap, then use ``pop`` get the smallest one. Heapsort_ works this way.
 
 .. code:: python
 
