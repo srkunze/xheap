@@ -19,9 +19,14 @@ class HeapTestCase(unittest.TestCase):
         Heap(ascii_uppercase).check()
         Heap(reversed(ascii_uppercase)).check()
 
-    def test_check_invalid(self):
+    def test_check_variant_invalid(self):
         heap = Heap(range(100))
-        heap[3] = 10000
+        heap[3] = (10000, 10000)
+        self.assertRaises(InvalidHeapError, heap.check)
+
+    def test_check_indexes_invalid(self):
+        heap = Heap(range(100))
+        heap._indexes[(10000, 10000)] = 3
         self.assertRaises(InvalidHeapError, heap.check)
 
     def test_push(self):
@@ -54,8 +59,20 @@ class HeapTestCase(unittest.TestCase):
         self.assertEqual(25, len(heap))
         heap.check()
 
-    def test_remove(self):
+    def test_remove_first(self):
+        heap = Heap(reversed(ascii_uppercase))
+        self.assertEqual(0, heap.remove('A'))
+        self.assertEqual(25, len(heap))
+        heap.check()
+
+    def test_remove_middle(self):
         heap = Heap(reversed(ascii_uppercase))
         self.assertEqual(13, heap.remove('M'))
+        self.assertEqual(25, len(heap))
+        heap.check()
+
+    def test_remove_last(self):
+        heap = Heap(reversed(ascii_uppercase))
+        self.assertEqual(24, heap.remove('Z'))
         self.assertEqual(25, len(heap))
         heap.check()
