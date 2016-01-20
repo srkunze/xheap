@@ -145,19 +145,19 @@ class KeyHeap(unittest.TestCase):
         self.assertRaises(InvalidHeapError, heap.check)
 
     def test_remove_first(self):
-        heap = Heap(reversed(ascii_uppercase))
+        heap = KeyHeap(reversed(ascii_uppercase))
         self.assertEqual(0, heap.remove('A'))
         self.assertEqual(25, len(heap))
         heap.check()
 
     def test_remove_middle(self):
-        heap = Heap(reversed(ascii_uppercase))
+        heap = KeyHeap(reversed(ascii_uppercase))
         self.assertEqual(13, heap.remove('M'))
         self.assertEqual(25, len(heap))
         heap.check()
 
     def test_remove_last(self):
-        heap = Heap(reversed(ascii_uppercase))
+        heap = KeyHeap(reversed(ascii_uppercase))
         self.assertEqual(24, heap.remove('Z'))
         self.assertEqual(25, len(heap))
         heap.check()

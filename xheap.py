@@ -74,7 +74,7 @@ class Heap(list):
 
 class KeyHeap(Heap):
     """
-    KeyHeap is a heap that allowes you to specify the sorting kriteria useful for
+    KeyHeap is a heap that allowes you to specify the sorting criteria useful for
         - reversing the heap
         - several heaps for the same set of items
         - allows removal of item without knowing its index in the heap
