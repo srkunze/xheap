@@ -1,10 +1,12 @@
 #!/usr/bin/env python
 
+from __future__ import unicode_literals
+
 from setuptools import setup
 
 setup(
     name='xheap',
-    version='0.5',
+    version='0.6',
     description='Heap Implementation for Python',
     author='Sven R. Kunze',
     author_email='srkunze@mail.de',

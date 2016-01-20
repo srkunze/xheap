@@ -4,20 +4,85 @@ from __future__ import unicode_literals
 
 import heapq
 
-__version__ = '0.5'
-__version_info__ = (0, 5)
+__version__ = '0.6'
+__version_info__ = (0, 6)
 __all__ = ['Heap', 'InvalidHeapError']
 
 
 class Heap(list):
     """
+    Heap shamelessly built upon heapq providing the following benefits:
+      - object orientation
+      - pop supports index (default=0)
+      - cmp method is __lt__ (except for python 2 in case you don't define a __lt__ method)
+      - peek
+      - check_invariant
+
     Heap Invariant: a[k] <= a[2*k+1] and a[k] <= a[2*k+2]
     """
 
-    def __init__(self, iterable=[], key=lambda x: x):
-        super(Heap, self).__init__(list((key(value), value) for value in iterable))
-        self.key = key
+    def __init__(self, iterable=[]):
+        super(Heap, self).__init__(iterable)
         self.heapify()
+
+    def peek(self):
+        return self[0]
+
+    def pop(self, index=None):
+        """Pop item with given index off the heap (default smallest), maintaining the heap invariant."""
+        if index:
+            last_item = super(Heap, self).pop()
+            if index == len(self):
+                return_item = last_item
+            else:
+                return_item = self[index]
+                self[index] = last_item
+                if self[(index - 1) >> 1] < last_item:
+                    heapq._siftup(self, index)
+                else:
+                    heapq._siftdown(self, 0, index)
+            return return_item
+        return heapq.heappop(self)
+
+    def remove(self, item):
+        raise NotImplementedError
+
+    def push(self, item):
+        heapq.heappush(self, item)
+
+    def replace(self, item):
+        heapq.heapreplace(self, item)
+
+    def pushpop(self, item):
+        heapq.heappushpop(self, item)
+
+    def heapify(self):
+        heapq.heapify(self)
+
+    def check(self):
+        self.check_invariant()
+
+    def check_invariant(self):
+        for index in range(len(self)-1, 0, -1):
+            parent_index = (index-1) >> 1
+            if self[index] < self[parent_index]:
+                raise InvalidHeapError('heap invariant (heap[{parent_index}] <= heap[{index}]) violated: {parent} !<= {item}'.format(parent=self[parent_index], parent_index=parent_index, item=self[index], index=index))
+
+    def __repr__(self):
+        return 'Heap({content})'.format(content=super(Heap, self).__repr__())
+
+
+class KeyHeap(Heap):
+    """
+    KeyHeap is a heap that allowes you to specify the sorting kriteria useful for
+        - reversing the heap
+        - several heaps for the same set of items
+        - allows removal of item without knowing its index in the heap
+    """
+
+    def __init__(self, iterable=[], key=lambda x: x):
+        self.key = key
+        super(Heap, self).__init__(list((key(value), value) for value in iterable))
 
     def peek(self):
         return self[0][1]
