@@ -44,9 +44,6 @@ class Heap(list):
             return return_item
         return heapq.heappop(self)
 
-    def remove(self, item):
-        raise NotImplementedError
-
     def push(self, item):
         heapq.heappush(self, item)
 
@@ -58,6 +55,9 @@ class Heap(list):
 
     def heapify(self):
         heapq.heapify(self)
+
+    def remove(self, item):
+        raise NotImplementedError
 
     def check(self):
         self.check_invariant()

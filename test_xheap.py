@@ -63,71 +63,78 @@ class HeapTestCase(unittest.TestCase):
 
 class HeapTimeTestCase(unittest.TestCase):
 
+    def setUp(self):
+        self.hqs = []
+        for i in range(1000):
+            hq = list(reversed(ascii_uppercase))*100
+            heapq.heapify(hq)
+            self.hqs.append(hq)
+        self.hs = []
+        for i in range(1000):
+            h = Heap(list(reversed(ascii_uppercase))*100)
+            self.hs.append(h)
+
     def tearDown(self):
         print('-'*40)
 
     def test_init_time(self):
         with print_time('heapq.init'):
-            h = list(reversed(ascii_uppercase))
-            heapq.heapify(h)
+            for _ in range(1000):
+                heapq.heapify(list(reversed(ascii_uppercase)))
         with print_time('Heap.init'):
-            h = Heap(reversed(ascii_uppercase))
+            for _ in range(1000):
+                Heap(reversed(ascii_uppercase))
 
     def test_peek_time(self):
-        h = list(reversed(ascii_uppercase))
-        heapq.heapify(h)
         with print_time('heapq[0]'):
-            peek = h[0]
-        h = Heap(reversed(ascii_uppercase))
+            for _ in range(1000):
+                self.hqs[0]
         with print_time('Heap[0]'):
-            peek = h[0]
-        h = Heap(reversed(ascii_uppercase))
+            for _ in range(1000):
+                self.hs[0]
         with print_time('Heap.peek'):
-            peek = h.peek()
+            for _ in range(1000):
+                self.hs[0].peek()
 
     def test_pop_time(self):
-        h = list(reversed(ascii_uppercase))
-        heapq.heapify(h)
         with print_time('heapq.heappop'):
-            heapq.heappop(h)
-        h = Heap(reversed(ascii_uppercase))
+            for i in range(1000):
+                heapq.heappop(self.hqs[i])
         with print_time('Heap.pop'):
-            h.pop()
+            for i in range(1000):
+                self.hs[i].pop()
 
     def test_push_time(self):
-        h = list(reversed(ascii_uppercase))
-        heapq.heapify(h)
         with print_time('heapq.heappush'):
-            heapq.heappush(h, 'z')
-        h = Heap(reversed(ascii_uppercase))
+            for i in range(1000):
+                heapq.heappush(self.hqs[i], 'z')
         with print_time('Heap.push'):
-            h.push('z')
+            for i in range(1000):
+                self.hs[i].push('z')
 
     def test_replace_time(self):
-        h = list(reversed(ascii_uppercase))
-        heapq.heapify(h)
         with print_time('heapq.heapreplace'):
-            heapq.heapreplace(h, 'z')
-        h = Heap(reversed(ascii_uppercase))
+            for i in range(1000):
+                heapq.heapreplace(self.hqs[i], 'z')
         with print_time('Heap.replace'):
-            h.replace('z')
+            for i in range(1000):
+                self.hs[i].replace('z')
 
     def test_pushpop_time(self):
-        h = list(reversed(ascii_uppercase))
-        heapq.heapify(h)
         with print_time('heapq.heappushpop'):
-            heapq.heappushpop(h, 'z')
-        h = Heap(reversed(ascii_uppercase))
+            for i in range(1000):
+                heapq.heappushpop(self.hqs[i], 'z')
         with print_time('Heap.pushpop'):
-            h.pushpop('z')
+            for i in range(1000):
+                self.hs[i].pushpop('z')
 
     def test_heapify_time(self):
-        h = list(reversed(ascii_uppercase))
         with print_time('heapq.heapify'):
-            heapq.heapify(h)
-        h = Heap(reversed(ascii_uppercase))
+            for i in range(1000):
+                heapq.heapify(self.hqs[i])
         with print_time('Heap.heapify'):
-            h.heapify()
+            for i in range(1000):
+                self.hs[i].heapify()
 
 
 class KeyHeap(unittest.TestCase):
@@ -162,4 +169,4 @@ def print_time(label):
     start = time.time()
     yield
     end = time.time()
-    print('{: <18} - {:8.4f}usec'.format(label, (end - start) * 1000000.0))
+    print('{: <18} - {:8.4f}usec'.format(label, (end - start) * 1000.0))
