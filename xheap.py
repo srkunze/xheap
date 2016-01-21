@@ -138,10 +138,6 @@ class RemovalHeap(Heap):
         if self._indexes != self._get_indexes():
             raise InvalidHeapError('_indexes is broken')
 
-    def __setitem__(self, key, value):
-        self._indexes[value] = key
-        super(RemovalHeap, self).__setitem__(key, value)
-
     def _get_indexes(self):
         indexes = {}
         for index, value in enumerate(self):
@@ -149,6 +145,10 @@ class RemovalHeap(Heap):
                 raise InvalidHeapError('values are not unique')
             indexes[value] = index
         return indexes
+
+    def __setitem__(self, key, value):
+        self._indexes[value] = key
+        super(RemovalHeap, self).__setitem__(key, value)
 
 
 class InvalidHeapError(RuntimeError):
