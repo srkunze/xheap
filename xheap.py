@@ -14,9 +14,9 @@ class Heap(list):
     Heap shamelessly built upon heapq providing the following benefits:
       - object orientation
       - pop supports index (default=0)
-      - cmp method is __lt__ (except for python 2 in case you don't define a __lt__ method)
       - peek
       - check_invariant
+    It uses __lt__ for comparison (except for python 2 in case you don't define a __lt__ method, then its __le__).
 
     Heap Invariant: a[k] <= a[2*k+1] and a[k] <= a[2*k+2]
     """
@@ -140,11 +140,11 @@ class RemovalHeap(Heap):
 
     def __setitem__(self, key, value):
         self._indexes[value] = key
-        super(Heap, self).__setitem__(key, value)
+        super(RemovalHeap, self).__setitem__(key, value)
 
     def _get_indexes(self):
         indexes = {}
-        for index, value in enumerate(super(Heap, self).__iter__()):
+        for index, value in enumerate(self):
             if value in indexes:
                 raise InvalidHeapError('values are not unique')
             indexes[value] = index
