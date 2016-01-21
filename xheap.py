@@ -28,8 +28,10 @@ class Heap(list):
     def peek(self):
         return self[0]
 
+    def push(self, item):
+        heapq.heappush(self, item)
+
     def pop(self, index=None):
-        """Pop item with given index off the heap (default smallest), maintaining the heap invariant."""
         if index:
             last_item = super(Heap, self).pop()
             if index == len(self):
@@ -44,8 +46,8 @@ class Heap(list):
             return return_item
         return heapq.heappop(self)
 
-    def push(self, item):
-        heapq.heappush(self, item)
+    def remove(self, item):
+        raise NotImplementedError
 
     def replace(self, item):
         heapq.heapreplace(self, item)
@@ -56,12 +58,6 @@ class Heap(list):
     def heapify(self):
         heapq.heapify(self)
 
-    def remove(self, item):
-        raise NotImplementedError
-
-    def __setslice__(self, i, j, sequence):
-        raise NotImplementedError
-
     def check(self):
         self.check_invariant()
 
@@ -70,6 +66,9 @@ class Heap(list):
             parent_index = (index-1) >> 1
             if self[index] < self[parent_index]:
                 raise InvalidHeapError('heap invariant (heap[{parent_index}] <= heap[{index}]) violated: {parent} !<= {item}'.format(parent=self[parent_index], parent_index=parent_index, item=self[index], index=index))
+
+    def __setslice__(self, i, j, sequence):
+        raise NotImplementedError
 
     def __repr__(self):
         return 'Heap({content})'.format(content=super(Heap, self).__repr__())
@@ -117,15 +116,19 @@ class RemovalHeap(Heap):
             raise RuntimeError('same item not allowed to be inserted twice.')
         super(RemovalHeap, self).push(item)
 
-    def pop(self, index=0):
-        return_value = super(RemovalHeap, self).pop(index)
-        del self._indexes[return_value]
-        return return_value
+    def pop(self, index=None):
+        return_item = super(RemovalHeap, self).pop(index)
+        del self._indexes[return_item]
+        return return_item
 
     def remove(self, value):
         index = self._indexes[value]
         self.pop(index)
         return index
+
+    def heapify(self):
+        heapq.heapify(self)
+        self._indexes = self._get_indexes()
 
     def check(self):
         super(RemovalHeap, self).check()
@@ -135,21 +138,17 @@ class RemovalHeap(Heap):
         if self._indexes != self._get_indexes():
             raise InvalidHeapError('_indexes is broken')
 
+    def __setitem__(self, key, value):
+        self._indexes[value] = key
+        super(Heap, self).__setitem__(key, value)
+
     def _get_indexes(self):
         indexes = {}
         for index, value in enumerate(super(Heap, self).__iter__()):
-            if value[1] in indexes:
+            if value in indexes:
                 raise InvalidHeapError('values are not unique')
-            indexes[value[1]] = index
+            indexes[value] = index
         return indexes
-
-    def __setitem__(self, key, value):
-        self._indexes[value[1]] = key
-        super(Heap, self).__setitem__(key, value)
-
-    def heapify(self):
-        heapq.heapify(self)
-        self._indexes = self._get_indexes()
 
 
 class InvalidHeapError(RuntimeError):
