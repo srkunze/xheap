@@ -114,12 +114,35 @@ class RemovalHeap(Heap):
     def push(self, item):
         if item in self._indexes:
             raise RuntimeError('same item not allowed to be inserted twice.')
-        super(RemovalHeap, self).push(item)
+        self.append(item)
+        heapq._siftdown(self, 0, len(self)-1)
 
     def pop(self, index=None):
-        return_item = super(RemovalHeap, self).pop(index)
+        return_item = self._pop(index)
         del self._indexes[return_item]
         return return_item
+
+    def _pop(self, index):
+        if index:
+            last_item = super(Heap, self).pop()
+            if index == len(self):
+                return_item = last_item
+            else:
+                return_item = self[index]
+                self[index] = last_item
+                if self[(index - 1) >> 1] < last_item:
+                    heapq._siftup(self, index)
+                else:
+                    heapq._siftdown(self, 0, index)
+            return return_item
+        lastelt = super(Heap, self).pop()
+        if self:
+            returnitem = self[0]
+            self[0] = lastelt
+            heapq._siftup(self, 0)
+        else:
+            returnitem = lastelt
+        return returnitem
 
     def remove(self, value):
         index = self._indexes[value]
@@ -127,6 +150,7 @@ class RemovalHeap(Heap):
         return index
 
     def heapify(self):
+        self._indexes = {}
         heapq.heapify(self)
         self._indexes = self._get_indexes()
 
