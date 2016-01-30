@@ -23,7 +23,7 @@ Suppose you have a heap, then use ``pop`` get the smallest one. Heapsort_ works 
 
 .. code:: python
 
-    heap = Heap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
+    heap = Heap(['H', 'D', 'B', 'A', 'E', 'C', 'L', 'J', 'I'])
     heap.pop()  # returns A
     heap.pop()  # returns B
     heap.pop()  # returns C
@@ -43,38 +43,43 @@ Indeed and it's as fast as pop. Use ``push`` for insertion.
 Can I remove an item from the middle of a heap?
 -----------------------------------------------
 
-Yes, that's what ``remove`` is supposed to do.
+Yes, that's what ``remove`` is supposed to do. You need to use the ``RemovalHeap`` for this.
 
 .. code:: python
 
-    heap = Heap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
-    heap.remove('L')     # returns index: 6
-
-A heap is basically a list. So, if you know the index of the item, you can use ``pop`` instead.
-
-.. code:: python
-
-    heap = Heap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
-    heap.pop(6)          # returns item: L
+    heap = RemovalHeap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
+    heap.remove('L')
 
 
-Max-Heap or Min-Heap?
----------------------
+Can I specify the order of item?
+--------------------------------
 
-**You define the order of items.** Just imagine two heaps of the very same set of items but you need
-different sorting for each heap. So, you define what min and max means, via ``cmp``.
+Just imagine two heaps of the very same set of items but you need different sorting for each heap. That is
+what ``OrderHeap`` is designed for:
 
 .. code:: python
 
-    items = [date(2015, 1, 1), date(2015, 1, 2),  date(2015, 1, 3)]
-    order1 = Heap(items, cmp=lambda x, y: x.day <= y.day)
-    order2 = Heap(items, cmp=lambda x, y: x.weekday() >= y.weekday())
+    items = [date(2015, 1, 1), date(2015, 1, 2),  date(2015, 1, 3),  date(2015, 1, 4)]
+    day_heap = OrderHeap(items, key=lambda date: date.day)
+    day_heap.peek()  # returns date(2015, 1, 1)
+    weekday_heap = OrderHeap(items, key=lambda date: date.weekday())
+    weekday_heap.peek()  # returns date(2015, 1, 4)#
+
+
+What about both remove+order?
+-----------------------------
+
+No problem. Use ``XHeap``.
+
+If you wonder why there are four different heap implementations, it's a matter of speed.
+More features basically mean, the heap is slower. So, you always could use XHeap for all features available but
+beware of the slowdown.
 
 
 Checking Heap Invariant
 -----------------------
 
-If you tinker with a heap you can check whether the heap invariant still holds:
+A heap is just a list. So, if you tinker with it, you can check whether its invariant still holds:
 
 
 .. code:: python
