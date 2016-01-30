@@ -60,8 +60,10 @@ what ``OrderHeap`` is designed for:
 .. code:: python
 
     items = [date(2016, 1, 1), date(2016, 1, 2),  date(2016, 1, 3),  date(2016, 1, 4)]
+
     day_heap = OrderHeap(items, key=lambda date: date.day)
     day_heap.peek()      # returns date(2016, 1, 1)
+
     weekday_heap = OrderHeap(items, key=lambda date: date.weekday())
     weekday_heap.peek()  # returns date(2016, 1, 4)
 
