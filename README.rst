@@ -77,9 +77,9 @@ What about both remove+order?
 
 No problem. Use ``XHeap``.
 
-If you wonder why there are four different heap implementations, it's a matter of speed.
-More features basically mean, the heap is slower. So, you always could use XHeap for all features available but
-beware of the slowdown.
+If you wonder why there are 4 distinct heap implementations, it's a matter of speed.
+Each additional feature slows a heap down. Thus, you could always use XHeap but beware
+of the slowdown.
 
 
 Checking Heap Invariant
@@ -103,9 +103,9 @@ Good
 
 - uses C implementation if available (i.e. fast)
 - object-oriented
-- can remove items from within the heap
-- can remove items with unknown index
-- sorting defined per heap (falls back to Pythonic ``<=``)
+- no slowdown if you don't need more than a simple heap
+- removal available
+- custom orders available
 - works with Python2 and Python3
 
 Bad
@@ -114,6 +114,7 @@ Bad
 - no drawbacks discovered so far ;)
 - needs fix:
 
+  - replace + pushpop
   - decrease-key and increase-key seem to be another important missing use-case of heapq_; so, I will dig into that as well
   - merge heaps
 
