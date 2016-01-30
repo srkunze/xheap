@@ -59,11 +59,11 @@ what ``OrderHeap`` is designed for:
 
 .. code:: python
 
-    items = [date(2015, 1, 1), date(2015, 1, 2),  date(2015, 1, 3),  date(2015, 1, 4)]
+    items = [date(2016, 1, 1), date(2016, 1, 2),  date(2016, 1, 3),  date(2016, 1, 4)]
     day_heap = OrderHeap(items, key=lambda date: date.day)
-    day_heap.peek()  # returns date(2015, 1, 1)
+    day_heap.peek()      # returns date(2016, 1, 1)
     weekday_heap = OrderHeap(items, key=lambda date: date.weekday())
-    weekday_heap.peek()  # returns date(2015, 1, 4)#
+    weekday_heap.peek()  # returns date(2016, 1, 4)
 
 
 What about both remove+order?
