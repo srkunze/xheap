@@ -1,5 +1,5 @@
-XHEAP_
-======
+`XHEAP <https://pypi.python.org/pypi/xheap>`_
+=============================================
 
 It's like heapq_ (blazingly fast) but object-oriented + more features.
 `Read more here <http://srkunze.blogspot.com/2016/01/fast-object-oriented-heap-implementation.html>`_.
