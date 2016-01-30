@@ -189,6 +189,7 @@ class RemovalHeap(Heap):
 
 
 class XHeap(Heap):
+    """Hybrid of OrderHeap and RemovalHeap."""
 
     # order
     def __init__(self, iterable=[], key=None):
