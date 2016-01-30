@@ -114,7 +114,6 @@ Bad
 - no drawbacks discovered so far ;)
 - needs fix:
 
-  - replace + pushpop
   - decrease-key and increase-key seem to be another important missing use-case of heapq_; so, I will dig into that as well
   - merge heaps
 
