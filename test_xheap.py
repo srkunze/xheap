@@ -50,24 +50,18 @@ class HeapTestCase(unittest.TestCase):
 
     def test_pushpop(self):
         heap = Heap(reversed(ascii_uppercase))
-        sorted_items = []
         for u, l in zip(ascii_uppercase, ascii_lowercase):
             popped_item = heap.pushpop(l)
             heap.check()
             self.assertEqual(u, popped_item)
-            sorted_items.append(popped_item)
-        self.assertSequenceEqual(ascii_uppercase, sorted_items)
         self.assertSetEqual(set(ascii_lowercase), set(heap))
 
     def test_poppush(self):
         heap = Heap(reversed(ascii_uppercase))
-        sorted_items = []
         for u, l in zip(ascii_uppercase, ascii_lowercase):
             popped_item = heap.poppush(l)
             heap.check()
             self.assertEqual(u, popped_item)
-            sorted_items.append(popped_item)
-        self.assertSequenceEqual(ascii_uppercase, sorted_items)
         self.assertSetEqual(set(ascii_lowercase), set(heap))
 
     def test_remove_not_implemented(self):
@@ -111,7 +105,7 @@ class OrderHeapTestCase(unittest.TestCase):
             heap.check()
         self.assertSetEqual(set(ascii_uppercase), set(heap))
 
-    def test_pop_first(self):
+    def test_pop(self):
         heap = OrderHeap(reversed(ascii_uppercase), key=self.key)
         sorted_items = []
         for c in reversed(ascii_uppercase):
@@ -121,6 +115,22 @@ class OrderHeapTestCase(unittest.TestCase):
             sorted_items.append(popped_item)
         self.assertSequenceEqual(list(reversed(ascii_uppercase)), sorted_items)
         self.assertSetEqual(set(), set(heap))
+
+    def test_pushpop(self):
+        heap = OrderHeap(reversed(ascii_lowercase), key=self.key)
+        for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
+            popped_item = heap.pushpop(u)
+            heap.check()
+            self.assertEqual(l, popped_item)
+        self.assertSetEqual(set(ascii_uppercase), set(heap))
+
+    def test_poppush(self):
+        heap = OrderHeap(reversed(ascii_lowercase), key=self.key)
+        for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
+            popped_item = heap.poppush(u)
+            heap.check()
+            self.assertEqual(l, popped_item)
+        self.assertSetEqual(set(ascii_uppercase), set(heap))
 
     def test_remove_not_implemented(self):
         heap = OrderHeap(reversed(ascii_uppercase), key=self.key)
@@ -182,7 +192,7 @@ class RemovalHeapTestCase(unittest.TestCase):
         self.assertSetEqual(set(), set(heap))
 
     def test_pushpop(self):
-        heap = Heap(reversed(ascii_uppercase))
+        heap = RemovalHeap(reversed(ascii_uppercase))
         sorted_items = []
         for u, l in zip(ascii_uppercase, ascii_lowercase):
             popped_item = heap.pushpop(l)
@@ -193,7 +203,7 @@ class RemovalHeapTestCase(unittest.TestCase):
         self.assertSetEqual(set(ascii_lowercase), set(heap))
 
     def test_poppush(self):
-        heap = Heap(reversed(ascii_uppercase))
+        heap = RemovalHeap(reversed(ascii_uppercase))
         sorted_items = []
         for u, l in zip(ascii_uppercase, ascii_lowercase):
             popped_item = heap.poppush(l)
