@@ -13,7 +13,7 @@ Less code.
 What are heaps good for anyway?
 -------------------------------
 
-When you need the smallest item of a large list—fast and with no overhead. `Read here for more background and design decisions`_.
+When you need the smallest item of a large list—fast and with no overhead. `Read here for more background and design decisions <http://srkunze.blogspot.com/2016/01/fast-object-oriented-heap-implementation.html>`_.
 
 
 How?
@@ -122,5 +122,4 @@ Bad
 
 .. _XHEAP: https://pypi.python.org/pypi/xheap
 .. _heapq: https://docs.python.org/3.5/library/heapq.html
-.. _Read_here_for_more_details_and_background: http://srkunze.blogspot.com/2016/01/fast-object-oriented-heap-implementation.html
 .. _heapsort: https://en.wikipedia.org/wiki/Heapsort
