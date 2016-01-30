@@ -4,8 +4,8 @@ XHEAP_
 It's like heapq_ (blazingly fast) but object-oriented + more features.
 
 
-Why?
-----
+Why?_
+-----
 
 Less code.
 
@@ -13,7 +13,7 @@ Less code.
 What are heaps good for anyway?
 -------------------------------
 
-When you need the smallest item of a large list—fast and with no overhead. Read_here_for_more_details_and_background_.
+When you need the smallest item of a large list—fast and with no overhead. `Read here for more background and design decisions`_.
 
 
 How?
