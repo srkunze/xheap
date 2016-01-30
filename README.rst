@@ -20,13 +20,14 @@ How?
 ----
 
 Suppose you have a heap, then use ``pop`` get the smallest one. Heapsort_ works this way.
+``peek`` works like ``pop`` but does not remove the item.
 
 .. code:: python
 
     heap = Heap(['H', 'D', 'B', 'A', 'E', 'C', 'L', 'J', 'I'])
-    heap.pop()  # returns A
-    heap.pop()  # returns B
-    heap.pop()  # returns C
+    heap.pop()   # returns A
+    heap.pop()   # returns B
+    heap.peek()  # returns C
     ...
 
 Can I insert an item?
