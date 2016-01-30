@@ -6,7 +6,7 @@ import heapq
 
 __version__ = '0.6'
 __version_info__ = (0, 6)
-__all__ = ['Heap', 'InvalidHeapError']
+__all__ = ['Heap', 'OrderHeap', 'RemovalHeap', 'XHeap', 'InvalidHeapError']
 
 
 class Heap(list):
@@ -32,28 +32,10 @@ class Heap(list):
         heapq.heappush(self, item)
 
     def pop(self, index=None):
-        if index:
-            last_item = super(Heap, self).pop()
-            if index == len(self):
-                return_item = last_item
-            else:
-                return_item = self[index]
-                self[index] = last_item
-                if self[(index - 1) >> 1] < last_item:
-                    heapq._siftup(self, index)
-                else:
-                    heapq._siftdown(self, 0, index)
-            return return_item
         return heapq.heappop(self)
 
     def remove(self, item):
         raise NotImplementedError
-
-    def replace(self, item):
-        heapq.heapreplace(self, item)
-
-    def pushpop(self, item):
-        heapq.heappushpop(self, item)
 
     def heapify(self):
         heapq.heapify(self)
@@ -94,14 +76,11 @@ class OrderHeap(Heap):
     def pop(self, index=None):
         return super(OrderHeap, self).pop(index)[1]
 
-    def replace(self, item):
-        heapq.heapreplace(self, (self.key(item), item))
-
-    def pushpop(self, item):
-        heapq.heappushpop(self, (self.key(item), item))
-
     def __iter__(self):
         return (item[1] for item in super(Heap, self).__iter__())
+
+    def __repr__(self):
+        return 'OrderHeap({content}, key={key})'.format(content=list(self), key=self.key)
 
 
 class RemovalHeap(Heap):
@@ -113,7 +92,7 @@ class RemovalHeap(Heap):
 
     def push(self, item):
         if item in self._indexes:
-            raise RuntimeError('same item not allowed to be inserted twice.')
+            raise RuntimeError('same value not allowed to be inserted twice.')
         self.append(item)
         heapq._siftdown(self, 0, len(self)-1)
 
@@ -144,10 +123,9 @@ class RemovalHeap(Heap):
             returnitem = lastelt
         return returnitem
 
-    def remove(self, value):
-        index = self._indexes[value]
+    def remove(self, item):
+        index = self._indexes[item]
         self.pop(index)
-        return index
 
     def heapify(self):
         self._indexes = {}
@@ -164,15 +142,108 @@ class RemovalHeap(Heap):
 
     def _get_indexes(self):
         indexes = {}
+        for index, item in enumerate(self):
+            if item in indexes:
+                raise InvalidHeapError('values are not unique')
+            indexes[item] = index
+        return indexes
+
+    def __setitem__(self, key, item):
+        self._indexes[item] = key
+        super(RemovalHeap, self).__setitem__(key, item)
+
+    def __repr__(self):
+        return 'RemovalHeap({content})'.format(content=list(self))
+
+
+class XHeap(Heap):
+
+    # order
+    def __init__(self, iterable, key):
+        self.key = key
+        super(XHeap, self).__init__((key(value), value) for value in iterable)
+
+    # order
+    def peek(self):
+        return self[0][1]
+
+    # remove + order
+    def push(self, value):
+        if value in self._indexes:
+            raise RuntimeError('same value not allowed to be inserted twice.')
+        self.append((self.key(value), value))
+        heapq._siftdown(self, 0, len(self)-1)
+
+    #remove
+    def remove(self, value):
+        index = self._indexes[value]
+        self.pop(index)
+
+    # order + remove
+    def pop(self, index=None):
+        return_item = self._pop(index)[1]
+        del self._indexes[return_item]
+        return return_item
+
+    # remove
+    def _pop(self, index):
+        if index:
+            last_item = super(Heap, self).pop()
+            if index == len(self):
+                return_item = last_item
+            else:
+                return_item = self[index]
+                self[index] = last_item
+                if self[(index - 1) >> 1] < last_item:
+                    heapq._siftup(self, index)
+                else:
+                    heapq._siftdown(self, 0, index)
+            return return_item
+        lastelt = super(Heap, self).pop()
+        if self:
+            returnitem = self[0]
+            self[0] = lastelt
+            heapq._siftup(self, 0)
+        else:
+            returnitem = lastelt
+        return returnitem
+
+    #remove
+    def heapify(self):
+        self._indexes = {}
+        heapq.heapify(self)
+        self._indexes = self._get_indexes()
+
+    #remove
+    def check(self):
+        super(XHeap, self).check()
+        self.check_indexes()
+
+    #remove
+    def check_indexes(self):
+        if self._indexes != self._get_indexes():
+            raise InvalidHeapError('_indexes is broken')
+
+    #remove
+    def _get_indexes(self):
+        indexes = {}
         for index, value in enumerate(self):
             if value in indexes:
                 raise InvalidHeapError('values are not unique')
             indexes[value] = index
         return indexes
 
+    #remove + order
     def __setitem__(self, key, value):
-        self._indexes[value] = key
-        super(RemovalHeap, self).__setitem__(key, value)
+        self._indexes[value[1]] = key
+        super(XHeap, self).__setitem__(key, value)
+
+    # order
+    def __iter__(self):
+        return (item[1] for item in super(Heap, self).__iter__())
+
+    def __repr__(self):
+        return 'XHeap({content}, key={key})'.format(content=list(self), key=self.key)
 
 
 class InvalidHeapError(RuntimeError):
