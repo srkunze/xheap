@@ -115,7 +115,7 @@ Bad
 - no drawbacks discovered so far ;)
 - needs fix:
 
-  - decrease-key and increase-key seem to be another important missing use-case of heapq_; so, I will dig into that as well
+  - decrease-key+increase-key: another missing use-case of `heapq <https://docs.python.org/3.5/library/heapq.html>`_
   - merge heaps
 
 - ideas are welcome :-)
