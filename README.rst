@@ -24,6 +24,8 @@ Let's suppose you have a heap, you can use ``pop`` to get its smallest item.
 
 .. code:: python
 
+    from xheap import Heap
+
     heap = Heap(['H', 'D', 'B', 'A', 'E', 'C', 'L', 'J', 'I'])
     heap.pop()   # returns A
     heap.pop()   # returns B
@@ -52,6 +54,8 @@ Yes, that's what ``RemovalHeap.remove`` is supposed to do.
 
 .. code:: python
 
+    from xheap import RemovalHeap
+
     heap = RemovalHeap(['A', 'D', 'B', 'H', 'E', 'C', 'L', 'J', 'I'])
     heap.remove('L')
 
@@ -63,6 +67,8 @@ Just imagine two heaps of the very same set of items but you need different sort
 what ``OrderHeap`` is designed for:
 
 .. code:: python
+
+    from xheap import OrderHeap
 
     items = [date(2016, 1, 1), date(2016, 1, 2),  date(2016, 1, 3),  date(2016, 1, 4)]
 
