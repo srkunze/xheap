@@ -13,7 +13,8 @@ Less code.
 What are heaps good for anyway?
 -------------------------------
 
-When you need the smallest item of a large list—fast and with no overhead. `Read here for more background and design decisions <http://srkunze.blogspot.com/2016/01/fast-object-oriented-heap-implementation.html>`_.
+When you need the smallest item of a large list—fast and with no overhead.
+`Read more here <http://srkunze.blogspot.com/2016/01/fast-object-oriented-heap-implementation.html>`_.
 
 
 How?
