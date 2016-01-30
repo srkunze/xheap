@@ -193,24 +193,18 @@ class RemovalHeapTestCase(unittest.TestCase):
 
     def test_pushpop(self):
         heap = RemovalHeap(reversed(ascii_uppercase))
-        sorted_items = []
         for u, l in zip(ascii_uppercase, ascii_lowercase):
             popped_item = heap.pushpop(l)
             heap.check()
             self.assertEqual(u, popped_item)
-            sorted_items.append(popped_item)
-        self.assertSequenceEqual(ascii_uppercase, sorted_items)
         self.assertSetEqual(set(ascii_lowercase), set(heap))
 
     def test_poppush(self):
         heap = RemovalHeap(reversed(ascii_uppercase))
-        sorted_items = []
         for u, l in zip(ascii_uppercase, ascii_lowercase):
             popped_item = heap.poppush(l)
             heap.check()
             self.assertEqual(u, popped_item)
-            sorted_items.append(popped_item)
-        self.assertSequenceEqual(ascii_uppercase, sorted_items)
         self.assertSetEqual(set(ascii_lowercase), set(heap))
 
     def test_setslice_not_implemented(self):
@@ -270,6 +264,22 @@ class XHeapTestCase(unittest.TestCase):
             heap.check()
             self.assertSetEqual(wanted, set(heap))
         self.assertSetEqual(set(), set(heap))
+
+    def test_pushpop(self):
+        heap = XHeap(reversed(ascii_lowercase), key=self.key)
+        for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
+            popped_item = heap.pushpop(u)
+            heap.check()
+            self.assertEqual(l, popped_item)
+        self.assertSetEqual(set(ascii_uppercase), set(heap))
+
+    def test_poppush(self):
+        heap = XHeap(reversed(ascii_lowercase), key=self.key)
+        for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
+            popped_item = heap.poppush(u)
+            heap.check()
+            self.assertEqual(l, popped_item)
+        self.assertSetEqual(set(ascii_uppercase), set(heap))
 
     def test_setslice_not_implemented(self):
         heap = XHeap(reversed(ascii_uppercase), key=self.key)
