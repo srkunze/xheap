@@ -2,6 +2,7 @@ XHEAP_
 ======
 
 It's like heapq_ (blazingly fast) but object-oriented + more features.
+`Read more here <http://srkunze.blogspot.com/2016/01/fast-object-oriented-heap-implementation.html>`_.
 
 
 Why?_
@@ -14,7 +15,6 @@ What are heaps good for anyway?
 -------------------------------
 
 When you need the smallest item of a large list—fast and with no overhead.
-`Read more here <http://srkunze.blogspot.com/2016/01/fast-object-oriented-heap-implementation.html>`_.
 
 
 How?
