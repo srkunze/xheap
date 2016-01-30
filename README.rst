@@ -13,7 +13,7 @@ Less code.
 What are heaps good for anyway?
 -------------------------------
 
-They are fast when you need the smallest/biggest item of big collections - Runtime: O(log n).
+When you need the smallest item of big collections - fast and with no overhead.
 
 
 How?
