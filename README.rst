@@ -20,7 +20,7 @@ When you need the smallest item of a large list—fast and with no overhead.
 How?
 ----
 
-Suppose you have a heap, then use ``pop`` get the smallest item.
+Let's suppose you have a heap, you can use ``pop`` to get its smallest item.
 
 .. code:: python
 
@@ -105,8 +105,8 @@ Good
 - uses C implementation if available (i.e. fast)
 - object-oriented
 - no slowdown if you don't need more than a simple heap
-- removal available
-- custom orders available
+- removal possible
+- custom orders possible
 - works with Python2 and Python3
 
 Bad
