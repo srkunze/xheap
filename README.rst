@@ -13,7 +13,7 @@ Less code.
 What are heaps good for anyway?
 -------------------------------
 
-When you need the smallest item of big collections - fast and with no overhead.
+When you need the smallest item of big collections—fast and with no overhead.
 
 
 How?
