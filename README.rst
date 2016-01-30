@@ -51,8 +51,8 @@ Yes, that's what ``RemovalHeap.remove`` is supposed to do.
     heap.remove('L')
 
 
-Can I specify the order of item?
---------------------------------
+Can I specify the order of the heap?
+------------------------------------
 
 Just imagine two heaps of the very same set of items but you need different sorting for each heap. That is
 what ``OrderHeap`` is designed for:
