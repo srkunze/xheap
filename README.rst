@@ -31,7 +31,6 @@ Let's suppose you have a heap, you can use ``pop`` to get its smallest item.
     heap.pop()   # returns B
     heap.pop()   # returns C
     heap.pop()   # returns D
-    ...
 
 `Heapsort <https://en.wikipedia.org/wiki/Heapsort>`_ works this way.
 
