@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-import heapq
+from heapq import heapify, heappushpop, heapreplace, heappop, heappush, _siftdown, _siftup
 
 __version__ = '0.8'
 __version_info__ = (0, 8)
@@ -29,16 +29,26 @@ class Heap(list):
         return self[0]
 
     def push(self, item):
-        heapq.heappush(self, item)
+        heappush(self, item)
 
     def pop(self, index=None):
-        return heapq.heappop(self)
+        return heappop(self)
 
     def remove(self, item):
         raise NotImplementedError
 
     def heapify(self):
-        heapq.heapify(self)
+        heapify(self)
+
+    def poppush(self, item):
+        """Because I always forget what replace means."""
+        return heapreplace(self, item)
+
+    def pushpop(self, item):
+        return heappushpop(self, item)
+
+    def replace(self, item):
+        return heapreplace(self, item)
 
     def check(self):
         self.check_invariant()
@@ -96,7 +106,7 @@ class RemovalHeap(Heap):
         if item in self._indexes:
             raise RuntimeError('same value not allowed to be inserted twice.')
         self.append(item)
-        heapq._siftdown(self, 0, len(self)-1)
+        _siftdown(self, 0, len(self)-1)
 
     def pop(self, index=None):
         return_item = self._pop(index)
@@ -112,15 +122,15 @@ class RemovalHeap(Heap):
                 return_item = self[index]
                 self[index] = last_item
                 if self[(index - 1) >> 1] < last_item:
-                    heapq._siftup(self, index)
+                    _siftup(self, index)
                 else:
-                    heapq._siftdown(self, 0, index)
+                    _siftdown(self, 0, index)
             return return_item
         lastelt = super(Heap, self).pop()
         if self:
             returnitem = self[0]
             self[0] = lastelt
-            heapq._siftup(self, 0)
+            _siftup(self, 0)
         else:
             returnitem = lastelt
         return returnitem
@@ -131,7 +141,7 @@ class RemovalHeap(Heap):
 
     def heapify(self):
         self._indexes = {}
-        heapq.heapify(self)
+        heapify(self)
         self._indexes = self._get_indexes()
 
     def check(self):
@@ -176,7 +186,7 @@ class XHeap(Heap):
         if value in self._indexes:
             raise RuntimeError('same value not allowed to be inserted twice.')
         self.append((self.key(value), value))
-        heapq._siftdown(self, 0, len(self)-1)
+        _siftdown(self, 0, len(self)-1)
 
     #remove
     def remove(self, value):
@@ -199,15 +209,15 @@ class XHeap(Heap):
                 return_item = self[index]
                 self[index] = last_item
                 if self[(index - 1) >> 1] < last_item:
-                    heapq._siftup(self, index)
+                    _siftup(self, index)
                 else:
-                    heapq._siftdown(self, 0, index)
+                    _siftdown(self, 0, index)
             return return_item
         lastelt = super(Heap, self).pop()
         if self:
             returnitem = self[0]
             self[0] = lastelt
-            heapq._siftup(self, 0)
+            _siftup(self, 0)
         else:
             returnitem = lastelt
         return returnitem
@@ -215,7 +225,7 @@ class XHeap(Heap):
     #remove
     def heapify(self):
         self._indexes = {}
-        heapq.heapify(self)
+        heapify(self)
         self._indexes = self._get_indexes()
 
     #remove
