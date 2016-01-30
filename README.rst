@@ -1,7 +1,7 @@
 `XHEAP <https://pypi.python.org/pypi/xheap>`_
 =============================================
 
-It's like heapq_ (blazingly fast) but object-oriented + more features.
+It's like `heapq <https://docs.python.org/3.5/library/heapq.html>`_ (blazingly fast) but object-oriented + more features.
 `Read more here for the background <http://srkunze.blogspot.com/2016/01/fast-object-oriented-heap-implementation.html>`_.
 
 
@@ -31,7 +31,7 @@ Suppose you have a heap, then use ``pop`` get the smallest item.
     heap.pop()   # returns D
     ...
 
-Heapsort_ works this way.
+`Heapsort <https://en.wikipedia.org/wiki/Heapsort>`_ works this way.
 
 
 Can I insert an item?
@@ -119,8 +119,3 @@ Bad
   - merge heaps
 
 - ideas are welcome :-)
-
-
-.. _XHEAP: https://pypi.python.org/pypi/xheap
-.. _heapq: https://docs.python.org/3.5/library/heapq.html
-.. _heapsort: https://en.wikipedia.org/wiki/Heapsort
