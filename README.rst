@@ -43,7 +43,7 @@ Indeed and it's as fast as pop. Use ``push`` for insertion.
 Can I remove an item from the middle of a heap?
 -----------------------------------------------
 
-Yes, that's what ``remove`` is supposed to do. You need to use the ``RemovalHeap`` for this.
+Yes, that's what ``RemovalHeap.remove`` is supposed to do.
 
 .. code:: python
 
