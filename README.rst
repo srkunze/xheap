@@ -5,8 +5,8 @@ It's like `heapq <https://docs.python.org/3.5/library/heapq.html>`_ (blazingly f
 `Read more here for the background <http://srkunze.blogspot.com/2016/01/fast-object-oriented-heap-implementation.html>`_.
 
 
-Why?_
------
+Why?
+----
 
 Less code.
 
