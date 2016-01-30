@@ -43,12 +43,10 @@ class Heap(list):
     def poppush(self, item):
         """Because I always forget what replace means."""
         return heapreplace(self, item)
+    replace = poppush
 
     def pushpop(self, item):
         return heappushpop(self, item)
-
-    def replace(self, item):
-        return heapreplace(self, item)
 
     def check(self):
         self.check_invariant()
@@ -90,12 +88,10 @@ class OrderHeap(Heap):
 
     def poppush(self, item):
         return heapreplace(self, (self.key(item), item))[1]
+    replace = poppush
 
     def pushpop(self, item):
         return heappushpop(self, (self.key(item), item))[1]
-
-    def replace(self, item):
-        return heapreplace(self, (self.key(item), item))[1]
 
     def __iter__(self):
         return (item[1] for item in super(Heap, self).__iter__())
@@ -126,23 +122,23 @@ class RemovalHeap(Heap):
         if index:
             last_item = super(Heap, self).pop()
             if index == len(self):
-                return_item = last_item
+                return_value = last_item
             else:
-                return_item = self[index]
+                return_value = self[index]
                 self[index] = last_item
                 if self[(index - 1) >> 1] < last_item:
                     _siftup(self, index)
                 else:
                     _siftdown(self, 0, index)
-            return return_item
-        lastelt = super(Heap, self).pop()
+            return return_value
+        last_value = super(Heap, self).pop()
         if self:
-            returnitem = self[0]
-            self[0] = lastelt
+            return_value = self[0]
+            self[0] = last_value
             _siftup(self, 0)
         else:
-            returnitem = lastelt
-        return returnitem
+            return_value = last_value
+        return return_value
 
     def remove(self, item):
         index = self._indexes[item]
@@ -152,6 +148,21 @@ class RemovalHeap(Heap):
         self._indexes = {}
         heapify(self)
         self._indexes = self._get_indexes()
+
+    def poppush(self, value):
+        return_value = self[0]
+        self[0] = value
+        _siftup(self, 0)
+        del self._indexes[return_value]
+        return return_value
+    replace = poppush
+
+    def pushpop(self, value):
+        if self and self[0] < value:
+            value, self[0] = self[0], value
+            _siftup(self, 0)
+            del self._indexes[value]
+        return value
 
     def check(self):
         super(RemovalHeap, self).check()
@@ -169,9 +180,9 @@ class RemovalHeap(Heap):
             indexes[item] = index
         return indexes
 
-    def __setitem__(self, key, item):
-        self._indexes[item] = key
-        super(RemovalHeap, self).__setitem__(key, item)
+    def __setitem__(self, key, value):
+        self._indexes[value] = key
+        super(RemovalHeap, self).__setitem__(key, value)
 
     def __repr__(self):
         return 'RemovalHeap({content})'.format(content=list(self))
@@ -231,16 +242,22 @@ class XHeap(Heap):
             returnitem = lastelt
         return returnitem
 
-    #remove
-    def heapify(self):
-        self._indexes = {}
-        heapify(self)
-        self._indexes = self._get_indexes()
+    #order+remove
+    def poppush(self, value):
+        return_value = self[0]
+        self[0] = (self.key(value), value)
+        _siftup(self, 0)
+        del self._indexes[return_value]
+        return return_value
+    replace = poppush
 
-    #remove
-    def check(self):
-        super(XHeap, self).check()
-        self.check_indexes()
+    #order+remove
+    def pushpop(self, value):
+        if self and self[0] < value:
+            value, self[0] = self[0], value
+            _siftup(self, 0)
+            del self._indexes[value]
+        return value
 
     #remove
     def check_indexes(self):
