@@ -19,16 +19,18 @@ When you need the smallest item of big collections—fast and with no overhead.
 How?
 ----
 
-Suppose you have a heap, then use ``pop`` get the smallest one. Heapsort_ works this way.
-``peek`` works like ``pop`` but does not remove the item.
+Suppose you have a heap, then use ``pop`` get the smallest one.
 
 .. code:: python
 
     heap = Heap(['H', 'D', 'B', 'A', 'E', 'C', 'L', 'J', 'I'])
     heap.pop()   # returns A
     heap.pop()   # returns B
-    heap.peek()  # returns C
+    heap.pop()   # returns C
+    heap.peek()  # returns D
     ...
+
+Heapsort_ works this way.
 
 Can I insert an item?
 ---------------------
