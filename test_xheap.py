@@ -64,6 +64,7 @@ class OrderHeapTestCase(unittest.TestCase):
         return -ord(x)
 
     def test_init(self):
+        self.assertSetEqual(set(), set(OrderHeap(key=self.key)))
         self.assertSetEqual(set(), set(OrderHeap(set(), key=self.key)))
         self.assertSetEqual(set(ascii_uppercase), set(OrderHeap(ascii_uppercase, key=self.key)))
 
@@ -182,6 +183,7 @@ class XHeapTestCase(unittest.TestCase):
         return -ord(x)
 
     def test_init(self):
+        self.assertSetEqual(set(), set(XHeap(key=self.key)))
         self.assertSetEqual(set(), set(XHeap(set(), key=self.key)))
         self.assertSetEqual(set(ascii_uppercase), set(XHeap(ascii_uppercase, key=self.key)))
 

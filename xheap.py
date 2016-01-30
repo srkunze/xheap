@@ -63,9 +63,11 @@ class OrderHeap(Heap):
         - reversing the heap order
     """
 
-    def __init__(self, iterable, key):
+    def __init__(self, iterable=[], key=None):
+        if not key:
+            raise RuntimeError('specify key when using OrderHeap; otherwise, just use Heap')
         self.key = key
-        super(OrderHeap, self).__init__(list((key(value), value) for value in iterable))
+        super(OrderHeap, self).__init__((key(value), value) for value in iterable)
 
     def peek(self):
         return self[0][1]
@@ -159,7 +161,9 @@ class RemovalHeap(Heap):
 class XHeap(Heap):
 
     # order
-    def __init__(self, iterable, key):
+    def __init__(self, iterable=[], key=None):
+        if not key:
+            raise RuntimeError('specify key when using XHeap; otherwise, just use RemovalHeap')
         self.key = key
         super(XHeap, self).__init__((key(value), value) for value in iterable)
 
