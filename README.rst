@@ -19,7 +19,7 @@ When you need the smallest item of big collections—fast and with no overhead.
 How?
 ----
 
-Suppose you have a heap, then use ``pop`` get the smallest one.
+Suppose you have a heap, then use ``pop`` get the smallest item.
 
 .. code:: python
 
