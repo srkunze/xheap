@@ -27,7 +27,7 @@ Suppose you have a heap, then use ``pop`` get the smallest item.
     heap.pop()   # returns A
     heap.pop()   # returns B
     heap.pop()   # returns C
-    heap.peek()  # returns D
+    heap.pop()   # returns D
     ...
 
 Heapsort_ works this way.
