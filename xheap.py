@@ -88,6 +88,15 @@ class OrderHeap(Heap):
     def pop(self, index=None):
         return super(OrderHeap, self).pop(index)[1]
 
+    def poppush(self, item):
+        return heapreplace(self, (self.key(item), item))[1]
+
+    def pushpop(self, item):
+        return heappushpop(self, (self.key(item), item))[1]
+
+    def replace(self, item):
+        return heapreplace(self, (self.key(item), item))[1]
+
     def __iter__(self):
         return (item[1] for item in super(Heap, self).__iter__())
 
