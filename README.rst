@@ -32,6 +32,7 @@ Suppose you have a heap, then use ``pop`` get the smallest item.
 
 Heapsort_ works this way.
 
+
 Can I insert an item?
 ---------------------
 
