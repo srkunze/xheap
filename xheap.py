@@ -242,22 +242,34 @@ class XHeap(Heap):
             returnitem = lastelt
         return returnitem
 
-    #order+remove
+    #remove+order
     def poppush(self, value):
-        return_value = self[0]
+        return_value = self[0][1]
         self[0] = (self.key(value), value)
         _siftup(self, 0)
         del self._indexes[return_value]
         return return_value
     replace = poppush
 
-    #order+remove
+    #remove+order
     def pushpop(self, value):
-        if self and self[0] < value:
-            value, self[0] = self[0], value
+        item = (self.key(value), value)
+        if self and self[0] < item:
+            value, self[0] = self[0][1], item
             _siftup(self, 0)
             del self._indexes[value]
         return value
+
+    #remove
+    def heapify(self):
+        self._indexes = {}
+        heapify(self)
+        self._indexes = self._get_indexes()
+
+    #remove
+    def check(self):
+        super(XHeap, self).check()
+        self.check_indexes()
 
     #remove
     def check_indexes(self):
