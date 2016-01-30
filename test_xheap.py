@@ -196,8 +196,8 @@ class XHeapTestCase(unittest.TestCase):
         self.assertRaises(InvalidHeapError, heap.check)
 
     def test_peek(self):
-        heap = RemovalHeap(reversed(ascii_uppercase))
-        self.assertEqual('A', heap.peek())
+        heap = XHeap(reversed(ascii_uppercase), key=self.key)
+        self.assertEqual('Z', heap.peek())
 
     def test_push(self):
         heap = XHeap([], key=self.key)
