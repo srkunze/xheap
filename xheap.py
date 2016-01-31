@@ -114,31 +114,20 @@ class RemovalHeap(Heap):
         _siftdown(self, 0, len(self)-1)
 
     def pop(self, index=None):
+        index = index or 0
+        if index < 0:
+            index += len(self)
+        if index < 0:
+            raise IndexError
         return_item = self._pop(index)
         del self._indexes[return_item]
         return return_item
 
     def _pop(self, index):
-        if index:
-            last_item = super(Heap, self).pop()
-            if index == len(self):
-                return_value = last_item
-            else:
-                return_value = self[index]
-                self[index] = last_item
-                if self[(index - 1) >> 1] < last_item:
-                    _siftup(self, index)
-                else:
-                    _siftdown(self, 0, index)
-            return return_value
-        last_value = super(Heap, self).pop()
-        if self:
-            return_value = self[0]
-            self[0] = last_value
-            _siftup(self, 0)
-        else:
-            return_value = last_value
-        return return_value
+        self[index], self[-1] = self[-1], self[index]
+        retitem = super(Heap, self).pop()
+        _siftup(self, min(index, len(self) - 1))
+        return retitem
 
     def remove(self, item):
         index = self._indexes[item]
@@ -181,8 +170,12 @@ class RemovalHeap(Heap):
         return indexes
 
     def __setitem__(self, key, value):
-        self._indexes[value] = key
+        if key < 0:
+            key += len(self)
+        if key < 0:
+            raise IndexError
         super(RemovalHeap, self).__setitem__(key, value)
+        self._indexes[value] = key
 
     def __repr__(self):
         return 'RemovalHeap({content})'.format(content=list(self))
@@ -216,32 +209,21 @@ class XHeap(Heap):
 
     # order + remove
     def pop(self, index=None):
+        index = index or 0
+        if index < 0:
+            index += len(self)
+        if index < 0:
+            raise IndexError
         return_item = self._pop(index)[1]
         del self._indexes[return_item]
         return return_item
 
     # remove
     def _pop(self, index):
-        if index:
-            last_item = super(Heap, self).pop()
-            if index == len(self):
-                return_item = last_item
-            else:
-                return_item = self[index]
-                self[index] = last_item
-                if self[(index - 1) >> 1] < last_item:
-                    _siftup(self, index)
-                else:
-                    _siftdown(self, 0, index)
-            return return_item
-        lastelt = super(Heap, self).pop()
-        if self:
-            returnitem = self[0]
-            self[0] = lastelt
-            _siftup(self, 0)
-        else:
-            returnitem = lastelt
-        return returnitem
+        self[index], self[-1] = self[-1], self[index]
+        retitem = super(Heap, self).pop()
+        _siftup(self, min(index, len(self) - 1))
+        return retitem
 
     #remove+order
     def poppush(self, value):
@@ -288,8 +270,12 @@ class XHeap(Heap):
 
     #remove + order
     def __setitem__(self, key, value):
-        self._indexes[value[1]] = key
+        if key < 0:
+            key += len(self)
+        if key < 0:
+            raise IndexError
         super(XHeap, self).__setitem__(key, value)
+        self._indexes[value[1]] = key
 
     # order
     def __iter__(self):
