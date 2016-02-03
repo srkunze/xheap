@@ -126,7 +126,9 @@ class RemovalHeap(Heap):
     def _pop(self, index):
         self[index], self[-1] = self[-1], self[index]
         retitem = super(Heap, self).pop()
-        _siftup(self, min(index, len(self) - 1))
+        if index != len(self):
+            _siftdown(self, 0, index)
+            _siftup(self, index)
         return retitem
 
     def remove(self, item):
@@ -222,7 +224,9 @@ class XHeap(Heap):
     def _pop(self, index):
         self[index], self[-1] = self[-1], self[index]
         retitem = super(Heap, self).pop()
-        _siftup(self, min(index, len(self) - 1))
+        if index != len(self):
+            _siftdown(self, 0, index)
+            _siftup(self, index)
         return retitem
 
     #remove+order
