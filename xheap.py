@@ -13,8 +13,6 @@ class Heap(list):
     """
     Heap shamelessly built upon heapq providing the following benefits:
       - object orientation
-      - pop supports index (default=0)
-      - peek
       - check_invariant
     It uses __lt__ for comparison (except for python 2 in case you don't define a __lt__ method, then its __le__).
 
@@ -31,7 +29,7 @@ class Heap(list):
     def push(self, item):
         heappush(self, item)
 
-    def pop(self, index=None):
+    def pop(self):
         return heappop(self)
 
     def remove(self, item):
@@ -83,8 +81,8 @@ class OrderHeap(Heap):
     def push(self, item):
         super(OrderHeap, self).push((self.key(item), item))
 
-    def pop(self, index=None):
-        return super(OrderHeap, self).pop(index)[1]
+    def pop(self):
+        return super(OrderHeap, self).pop()[1]
 
     def poppush(self, item):
         return heapreplace(self, (self.key(item), item))[1]
@@ -103,7 +101,7 @@ class OrderHeap(Heap):
 class RemovalHeap(Heap):
     """
     RemovalHeap is a heap that allows you to remove an item without knowing its index in the heap; useful when
-        - users want cancel tasks out of the blue
+        - users want cancel tasks from a task queue
         - you have two queues of same items, pop an item from one and you want to remove it from the other, too
     """
 
