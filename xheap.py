@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 
 from heapq import heapify, heappushpop, heapreplace, heappop, heappush, _siftdown, _siftup
 
-__version__ = '0.10'
-__version_info__ = (0, 10)
+__version__ = '0.11'
+__version_info__ = (0, 11)
 __all__ = ['Heap', 'OrderHeap', 'RemovalHeap', 'XHeap', 'InvalidHeapError']
 
 
