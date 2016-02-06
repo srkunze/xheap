@@ -64,6 +64,10 @@ class HeapTestCase(unittest.TestCase):
             self.assertEqual(u, popped_item)
         self.assertSetEqual(set(ascii_lowercase), set(heap))
 
+    def test_pushpop_on_empty_heap(self):
+        heap = Heap()
+        self.assertEqual('A', heap.pushpop('A'))
+
     def test_pushpop(self):
         heap = Heap(reversed(ascii_uppercase))
         for u, l in zip(ascii_uppercase, ascii_lowercase):
@@ -139,6 +143,10 @@ class OrderHeapTestCase(unittest.TestCase):
             heap.check()
             self.assertEqual(l, popped_item)
         self.assertSetEqual(set(ascii_uppercase), set(heap))
+
+    def test_pushpop_on_empty_heap(self):
+        heap = OrderHeap(key=self.key)
+        self.assertEqual('A', heap.pushpop('A'))
 
     def test_pushpop(self):
         heap = OrderHeap(reversed(ascii_lowercase), key=self.key)
