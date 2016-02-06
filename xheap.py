@@ -111,27 +111,25 @@ class RemovalHeap(Heap):
         self.append(item)
         _siftdown(self, 0, len(self)-1)
 
-    def pop(self, index=None):
-        index = index or 0
-        if index < 0:
-            index += len(self)
-        if index < 0:
-            raise IndexError
-        return_item = self._pop(index)
+    def pop(self):
+        lastelt = super(Heap, self).pop()
+        if self:
+            return_item = self[0]
+            self[0] = lastelt
+            _siftup(self, 0)
+        else:
+            return_item = lastelt
         del self._indexes[return_item]
         return return_item
 
-    def _pop(self, index):
+    def remove(self, item):
+        index = self._indexes[item]
         self[index], self[-1] = self[-1], self[index]
-        retitem = super(Heap, self).pop()
+        super(Heap, self).pop()
         if index != len(self):
             _siftdown(self, 0, index)
             _siftup(self, index)
-        return retitem
-
-    def remove(self, item):
-        index = self._indexes[item]
-        self.pop(index)
+        del self._indexes[item]
 
     def heapify(self):
         self._indexes = {}
@@ -170,10 +168,6 @@ class RemovalHeap(Heap):
         return indexes
 
     def __setitem__(self, key, value):
-        if key < 0:
-            key += len(self)
-        if key < 0:
-            raise IndexError
         super(RemovalHeap, self).__setitem__(key, value)
         self._indexes[value] = key
 
@@ -202,30 +196,25 @@ class XHeap(Heap):
         self.append((self.key(value), value))
         _siftdown(self, 0, len(self)-1)
 
-    #remove
-    def remove(self, value):
-        index = self._indexes[value]
-        self.pop(index)
-
-    # order + remove
-    def pop(self, index=None):
-        index = index or 0
-        if index < 0:
-            index += len(self)
-        if index < 0:
-            raise IndexError
-        return_item = self._pop(index)[1]
+    def pop(self):
+        lastelt = super(Heap, self).pop()
+        if self:
+            return_item = self[0][1]
+            self[0] = lastelt
+            _siftup(self, 0)
+        else:
+            return_item = lastelt[1]
         del self._indexes[return_item]
         return return_item
 
-    # remove
-    def _pop(self, index):
+    def remove(self, item):
+        index = self._indexes[item]
         self[index], self[-1] = self[-1], self[index]
-        retitem = super(Heap, self).pop()
+        super(Heap, self).pop()
         if index != len(self):
             _siftdown(self, 0, index)
             _siftup(self, index)
-        return retitem
+        del self._indexes[item]
 
     #remove+order
     def poppush(self, value):
