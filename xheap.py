@@ -229,7 +229,8 @@ class XHeap(Heap):
     def pushpop(self, item):
         item_tuple = (self.key(item), item)
         if self and self[0] < item_tuple:
-            item, self[0] = self[0][1], item_tuple
+            item = self[0][1]
+            self[0] = item_tuple
             _siftup(self, 0)
             del self._indexes[item]
         return item
