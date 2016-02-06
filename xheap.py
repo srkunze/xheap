@@ -124,9 +124,9 @@ class RemovalHeap(Heap):
 
     def remove(self, item):
         index = self._indexes[item]
-        self[index], self[-1] = self[-1], self[index]
-        super(Heap, self).pop()
+        lastelt = super(Heap, self).pop()
         if index != len(self):
+            self[index] = lastelt
             _siftdown(self, 0, index)
             _siftup(self, index)
         del self._indexes[item]
@@ -209,9 +209,9 @@ class XHeap(Heap):
 
     def remove(self, item):
         index = self._indexes[item]
-        self[index], self[-1] = self[-1], self[index]
-        super(Heap, self).pop()
+        lastelt = super(Heap, self).pop()
         if index != len(self):
+            self[index] = lastelt
             _siftdown(self, 0, index)
             _siftup(self, index)
         del self._indexes[item]
