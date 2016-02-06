@@ -73,7 +73,7 @@ class OrderHeap(Heap):
         if not key:
             raise RuntimeError('specify key when using OrderHeap; otherwise, just use Heap')
         self.key = key
-        super(OrderHeap, self).__init__((key(value), value) for value in iterable)
+        super(OrderHeap, self).__init__((key(item), item) for item in iterable)
 
     def peek(self):
         return self[0][1]
@@ -92,7 +92,7 @@ class OrderHeap(Heap):
         return heappushpop(self, (self.key(item), item))[1]
 
     def __iter__(self):
-        return (item[1] for item in super(Heap, self).__iter__())
+        return (item_tuple[1] for item_tuple in super(Heap, self).__iter__())
 
     def __repr__(self):
         return 'OrderHeap({content}, key={key})'.format(content=list(self), key=self.key)
@@ -107,26 +107,26 @@ class RemovalHeap(Heap):
 
     def push(self, item):
         if item in self._indexes:
-            raise RuntimeError('same value not allowed to be inserted twice.')
+            raise RuntimeError('same item not allowed to be inserted twice.')
         self.append(item)
         _siftdown(self, 0, len(self)-1)
 
     def pop(self):
-        lastelt = super(Heap, self).pop()
+        last_item = super(Heap, self).pop()
         if self:
             return_item = self[0]
-            self[0] = lastelt
+            self[0] = last_item
             _siftup(self, 0)
         else:
-            return_item = lastelt
+            return_item = last_item
         del self._indexes[return_item]
         return return_item
 
     def remove(self, item):
         index = self._indexes[item]
-        lastelt = super(Heap, self).pop()
+        last_item = super(Heap, self).pop()
         if index != len(self):
-            self[index] = lastelt
+            self[index] = last_item
             _siftdown(self, 0, index)
             _siftup(self, index)
         del self._indexes[item]
@@ -136,20 +136,20 @@ class RemovalHeap(Heap):
         heapify(self)
         self._indexes = self._get_indexes()
 
-    def poppush(self, value):
-        return_value = self[0]
-        self[0] = value
+    def poppush(self, item):
+        return_item = self[0]
+        self[0] = item
         _siftup(self, 0)
-        del self._indexes[return_value]
-        return return_value
+        del self._indexes[return_item]
+        return return_item
     replace = poppush
 
-    def pushpop(self, value):
-        if self and self[0] < value:
-            value, self[0] = self[0], value
+    def pushpop(self, item):
+        if self and self[0] < item:
+            item, self[0] = self[0], item
             _siftup(self, 0)
-            del self._indexes[value]
-        return value
+            del self._indexes[item]
+        return item
 
     def check(self):
         super(RemovalHeap, self).check()
@@ -163,13 +163,13 @@ class RemovalHeap(Heap):
         indexes = {}
         for index, item in enumerate(self):
             if item in indexes:
-                raise InvalidHeapError('values are not unique')
+                raise InvalidHeapError('items are not unique')
             indexes[item] = index
         return indexes
 
-    def __setitem__(self, key, value):
-        super(RemovalHeap, self).__setitem__(key, value)
-        self._indexes[value] = key
+    def __setitem__(self, key, item):
+        super(RemovalHeap, self).__setitem__(key, item)
+        self._indexes[item] = key
 
     def __repr__(self):
         return 'RemovalHeap({content})'.format(content=list(self))
@@ -183,56 +183,56 @@ class XHeap(Heap):
         if not key:
             raise RuntimeError('specify key when using XHeap; otherwise, just use RemovalHeap')
         self.key = key
-        super(XHeap, self).__init__((key(value), value) for value in iterable)
+        super(XHeap, self).__init__((key(item), item) for item in iterable)
 
     # order
     def peek(self):
         return self[0][1]
 
     # remove + order
-    def push(self, value):
-        if value in self._indexes:
-            raise RuntimeError('same value not allowed to be inserted twice.')
-        self.append((self.key(value), value))
+    def push(self, item):
+        if item in self._indexes:
+            raise RuntimeError('same item not allowed to be inserted twice.')
+        self.append((self.key(item), item))
         _siftdown(self, 0, len(self)-1)
 
     def pop(self):
-        lastelt = super(Heap, self).pop()
+        last_item_tuple = super(Heap, self).pop()
         if self:
             return_item = self[0][1]
-            self[0] = lastelt
+            self[0] = last_item_tuple
             _siftup(self, 0)
         else:
-            return_item = lastelt[1]
+            return_item = last_item_tuple[1]
         del self._indexes[return_item]
         return return_item
 
     def remove(self, item):
         index = self._indexes[item]
-        lastelt = super(Heap, self).pop()
+        last_item_tuple = super(Heap, self).pop()
         if index != len(self):
-            self[index] = lastelt
+            self[index] = last_item_tuple
             _siftdown(self, 0, index)
             _siftup(self, index)
         del self._indexes[item]
 
     #remove+order
-    def poppush(self, value):
-        return_value = self[0][1]
-        self[0] = (self.key(value), value)
+    def poppush(self, item):
+        return_item = self[0][1]
+        self[0] = (self.key(item), item)
         _siftup(self, 0)
-        del self._indexes[return_value]
-        return return_value
+        del self._indexes[return_item]
+        return return_item
     replace = poppush
 
     #remove+order
-    def pushpop(self, value):
-        item = (self.key(value), value)
+    def pushpop(self, item):
+        item = (self.key(item), item)
         if self and self[0] < item:
-            value, self[0] = self[0][1], item
+            item, self[0] = self[0][1], item
             _siftup(self, 0)
-            del self._indexes[value]
-        return value
+            del self._indexes[item]
+        return item
 
     #remove
     def heapify(self):
@@ -253,24 +253,20 @@ class XHeap(Heap):
     #remove
     def _get_indexes(self):
         indexes = {}
-        for index, value in enumerate(self):
-            if value in indexes:
-                raise InvalidHeapError('values are not unique')
-            indexes[value] = index
+        for index, item in enumerate(self):
+            if item in indexes:
+                raise InvalidHeapError('items are not unique')
+            indexes[item] = index
         return indexes
 
     #remove + order
-    def __setitem__(self, key, value):
-        if key < 0:
-            key += len(self)
-        if key < 0:
-            raise IndexError
-        super(XHeap, self).__setitem__(key, value)
-        self._indexes[value[1]] = key
+    def __setitem__(self, key, item_tuple):
+        super(XHeap, self).__setitem__(key, item_tuple)
+        self._indexes[item_tuple[1]] = key
 
     # order
     def __iter__(self):
-        return (item[1] for item in super(Heap, self).__iter__())
+        return (item_tuple[1] for item_tuple in super(Heap, self).__iter__())
 
     def __repr__(self):
         return 'XHeap({content}, key={key})'.format(content=list(self), key=self.key)
