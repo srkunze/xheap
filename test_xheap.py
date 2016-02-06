@@ -223,6 +223,10 @@ class RemovalHeapTestCase(unittest.TestCase):
             self.assertEqual(u, popped_item)
         self.assertSetEqual(set(ascii_lowercase), set(heap))
 
+    def test_pushpop_on_empty_heap(self):
+        heap = RemovalHeap()
+        self.assertEqual('A', heap.pushpop('A'))
+
     def test_pushpop(self):
         heap = RemovalHeap(reversed(ascii_uppercase))
         for u, l in zip(ascii_uppercase, ascii_lowercase):
@@ -304,6 +308,10 @@ class XHeapTestCase(unittest.TestCase):
             heap.check()
             self.assertEqual(l, popped_item)
         self.assertSetEqual(set(ascii_uppercase), set(heap))
+
+    def test_pushpop_on_empty_heap(self):
+        heap = XHeap(key=self.key)
+        self.assertEqual('A', heap.pushpop('A'))
 
     def test_pushpop(self):
         heap = XHeap(reversed(ascii_lowercase), key=self.key)
