@@ -2,6 +2,7 @@
 =============================================
 
 It's like `heapq <https://docs.python.org/3.5/library/heapq.html>`_ (blazingly fast) but object-oriented + more features.
+
 `Read more here for the background story <http://srkunze.blogspot.com/2016/01/fast-object-oriented-heap-implementation.html>`_.
 
 
