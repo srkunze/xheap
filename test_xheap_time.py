@@ -9,31 +9,45 @@ class HeapTimeCase(object):
 
     def time_init(self):
         return [
+            'init',
             (
-                'heapq.heapify',
+                'heapq',
                 'from heapq import heapify',
                 'heapify(list(reversed(range({size}))))',
                 1,
             ),
             (
-                'Heap.__init__',
+                'Heap',
                 'from xheap import Heap',
                 'Heap(reversed(range({size})))',
+                1,
+            ),
+            (
+                'RemovalHeap',
+                'from xheap import RemovalHeap',
+                'RemovalHeap(reversed(range({size})))',
                 1,
             ),
         ]
 
     def time_pop(self):
         return [
+            'pop',
             (
-                'heapq.heappop',
+                'heapq',
                 'from heapq import heapify, heappop; heap = list(reversed(range({size}))); heapify(heap)',
                 'heappop(heap)',
                 None,
             ),
             (
-                'Heap.pop',
+                'Heap',
                 'from xheap import Heap; heap = Heap(reversed(range({size})))',
+                'heap.pop()',
+                None,
+            ),
+            (
+                'RemovalHeap',
+                'from xheap import RemovalHeap; heap = RemovalHeap(reversed(range({size})))',
                 'heap.pop()',
                 None,
             ),
@@ -41,43 +55,144 @@ class HeapTimeCase(object):
 
     def time_push(self):
         return [
+            'push',
             (
-                'heapq.heappush',
-                'from heapq import heapify, heappush; heap = list(reversed(range({size}))); heapify(heap); i=0',
+                'heapq',
+                'from heapq import heapify, heappush; heap = []; i = 0',
                 'heappush(heap, i); i += 1',
                 None,
             ),
             (
-                'Heap.push',
-                'from xheap import Heap; heap = Heap(reversed(range({size}))); i=0',
+                'RemovalHeap',
+                'from xheap import Heap; heap = Heap(); i = 0',
+                'heap.push(i); i += 1',
+                None,
+            ),
+            (
+                'Heap',
+                'from xheap import RemovalHeap; heap = RemovalHeap(); i = 0',
                 'heap.push(i); i += 1',
                 None,
             ),
         ]
 
 
-initial_sizes = [10**2, 10**3, 10**4, 10**5, 10**6]
+class OrderHeapTimeCase(object):
+
+    def time_init(self):
+        return [
+            'init',
+            (
+                'heapq',
+                'from heapq import heapify',
+                'heapify(list(map(lambda x: (-x, x), reversed(range({size})))))',
+                1,
+            ),
+            (
+                'OrderHeap',
+                'from xheap import OrderHeap',
+                'OrderHeap(reversed(range({size})), key=lambda x: -x)',
+                1,
+            ),
+            (
+                'XHeap',
+                'from xheap import XHeap',
+                'XHeap(reversed(range({size})), key=lambda x: -x)',
+                1,
+            ),
+        ]
+
+    def time_pop(self):
+        return [
+            'pop',
+            (
+                'heapq',
+                'from heapq import heapify, heappop; heap = list(map(lambda x: (-x, x), reversed(range({size})))); heapify(heap)',
+                'heappop(heap)[1]',
+                None,
+            ),
+            (
+                'OrderHeap',
+                'from xheap import OrderHeap; heap = OrderHeap(reversed(range({size})), key=lambda x: -x)',
+                'heap.pop()',
+                None,
+            ),
+            (
+                'XHeap',
+                'from xheap import XHeap; heap = XHeap(reversed(range({size})), key=lambda x: -x)',
+                'heap.pop()',
+                None,
+            ),
+        ]
+
+    def time_push(self):
+        return [
+            'push',
+            (
+                'heapq',
+                'from heapq import heapify, heappush; heap = []; i = 0',
+                'heappush(heap, (-i, i)); i += 1',
+                None,
+            ),
+            (
+                'OrderHeap',
+                'from xheap import OrderHeap; heap = OrderHeap(key=lambda x: -x); i = 0',
+                'heap.push(i); i += 1',
+                None,
+            ),
+            (
+                'XHeap',
+                'from xheap import XHeap; heap = XHeap(key=lambda x: -x); i = 0',
+                'heap.push(i); i += 1',
+                None,
+            ),
+        ]
+
+
+class RemovalHeapTimeCase(object):
+
+    def time_remove(self):
+        return [
+            'remove',
+            (
+                'RemovalHeap',
+                'from xheap import RemovalHeap; heap = RemovalHeap(map(lambda x: (-x, x), reversed(range({size})))); i = 0',
+                'heap.remove((-i, i)); i += 1',
+                None,
+            ),
+            (
+                'XHeap',
+                'from xheap import XHeap; heap = XHeap(reversed(range({size})), key=lambda x: -x); i = 0',
+                'heap.remove(i); i += 1',
+                None,
+            ),
+        ]
+
+
+initial_sizes = [10**3, 10**4, 10**5, 10**6]
 repetitions = 10000
 def perform_time_configs(configs):
     for _, setup, stmt, number in configs:
-        yield [min(repeat(stmt.format(size=size), setup.format(size=size), number=(number or size), repeat=repetitions)) for size in initial_sizes]
+        yield [min(repeat(stmt.format(size=size), setup.format(size=size), number=(number or size//32), repeat=repetitions)) for size in initial_sizes]
 
 
-htc = HeapTimeCase()
-config_methods = [getattr(htc, method) for method in dir(htc) if method.startswith('time_') and callable(getattr(htc, method))]
-configs_list = [config_method() for config_method in config_methods]
-align = max(len(c[0]) for cs in configs_list for c in cs)
+for htc in (HeapTimeCase(), OrderHeapTimeCase(), RemovalHeapTimeCase()):
+    config_methods = [getattr(htc, method) for method in dir(htc) if method.startswith('time_') and callable(getattr(htc, method))]
+    configs_list = [config_method() for config_method in config_methods]
+    align_label = max(len(cs[0]) for cs in configs_list)
+    align_module = max(len(c[0]) for cs in configs_list for c in cs)
 
-for configs in configs_list:
-    results = list(perform_time_configs(configs))
+    for configs in configs_list:
+        label, configs = configs[0], configs[1:]
+        results = list(perform_time_configs(configs))
 
-    baseline_config = configs[0]
-    baseline_results = results[0]
+        baseline_config = configs[0]
+        baseline_results = results[0]
 
-    print(baseline_config[0].ljust(align), ' '.join('{:f}'.format(result) for result in baseline_results))
+        for i, (config, results) in enumerate(zip(configs, results)):
+            printed_label = (label if i == 0 else '').ljust(align_label)
 
-    for config, results in zip(configs[1:], results[1:]):
-        print(config[0].ljust(align), ' '.join('{:f}'.format(result) for result in results))
-        print('ratio'.ljust(align), ' '.join('{:7.4f}x'.format(result_after/result_before) for result_before, result_after in zip(baseline_results, results)))
+            print(printed_label, config[0].ljust(align_module), ' '.join('{:5.2f} ({:5.2f}x)'.format(result*1000, result/baseline_result) for result, baseline_result in zip(results, baseline_results)))
 
-    print('---------------------------------')
+        print('--------------------------------------------------------------------')
+    print('--------------------------------------------------------------------')
