@@ -2,163 +2,82 @@
 
 from __future__ import unicode_literals
 
-import unittest
-from contextlib import contextmanager
-from heapq import heapify, heappush, heappop, heapreplace, heappushpop
-from string import ascii_uppercase
-
-from xheap import Heap, RemovalHeap, OrderHeap, XHeap
-
-repeat = 100
+from timeit import repeat
 
 
-class BaseTimeTestCaseMixin(object):
+class HeapTimeCase(object):
+
+    def time_init(self):
+        return [
+            (
+                'heapq.heapify',
+                'from heapq import heapify',
+                'heapify(list(reversed(range({size}))))',
+                1,
+            ),
+            (
+                'Heap.__init__',
+                'from xheap import Heap',
+                'Heap(reversed(range({size})))',
+                1,
+            ),
+        ]
+
+    def time_pop(self):
+        return [
+            (
+                'heapq.heappop',
+                'from heapq import heapify, heappop; heap = list(reversed(range({size}))); heapify(heap)',
+                'heappop(heap)',
+                None,
+            ),
+            (
+                'Heap.pop',
+                'from xheap import Heap; heap = Heap(reversed(range({size})))',
+                'heap.pop()',
+                None,
+            ),
+        ]
+
+    def time_push(self):
+        return [
+            (
+                'heapq.heappush',
+                'from heapq import heapify, heappush; heap = list(reversed(range({size}))); heapify(heap); i=0',
+                'heappush(heap, i); i += 1',
+                None,
+            ),
+            (
+                'Heap.push',
+                'from xheap import Heap; heap = Heap(reversed(range({size}))); i=0',
+                'heap.push(i); i += 1',
+                None,
+            ),
+        ]
 
 
-    def tearDown(self):
-        print('-'*40)
-
-    def test_init_time(self):
-        with print_time('heapq.init'):
-            for _ in range(repeat):
-                heapify(list(reversed(ascii_uppercase)))
-        with print_time('Heap.init'):
-            for _ in range(repeat):
-                Heap(reversed(ascii_uppercase))
-
-    def test_peek_time(self):
-        with print_time('heapq[0]'):
-            for _ in range(repeat):
-                self.hqs[0]
-        with print_time('Heap.peek'):
-            for _ in range(repeat):
-                self.hs[0].peek()
-
-    def test_pop_time(self):
-        with print_time('heapq.heappop'):
-            for i in range(repeat):
-                heappop(self.hqs[i])
-        with print_time('Heap.pop'):
-            for i in range(repeat):
-                self.hs[i].pop()
-
-    def test_push_time(self):
-        with print_time('heapq.heappush'):
-            for i in range(repeat):
-                heappush(self.hqs[i], 10000000)
-        with print_time('Heap.push'):
-            for i in range(repeat):
-                self.hs[i].push(10000000)
-
-    def test_replace_time(self):
-        with print_time('heapq.heapreplace'):
-            for i in range(repeat):
-                heapreplace(self.hqs[i], 10000000)
-        with print_time('Heap.replace'):
-            for i in range(repeat):
-                self.hs[i].replace(10000000)
-
-    def test_pushpop_time(self):
-        with print_time('heapq.heappushpop'):
-            for i in range(repeat):
-                heappushpop(self.hqs[i], 10000000)
-        with print_time('Heap.pushpop'):
-            for i in range(repeat):
-                self.hs[i].pushpop(10000000)
-
-    def test_heapify_time(self):
-        with print_time('heapq.heapify'):
-            for i in range(repeat):
-                heapify(self.hqs[i])
-        with print_time('Heap.heapify'):
-            for i in range(repeat):
-                self.hs[i].heapify()
+initial_sizes = [10**2, 10**3, 10**4, 10**5, 10**6]
+repetitions = 10000
+def perform_time_configs(configs):
+    for _, setup, stmt, number in configs:
+        yield [min(repeat(stmt.format(size=size), setup.format(size=size), number=(number or size), repeat=repetitions)) for size in initial_sizes]
 
 
-class HeapTimeTestCase(BaseTimeTestCaseMixin, unittest.TestCase):
+htc = HeapTimeCase()
+config_methods = [getattr(htc, method) for method in dir(htc) if method.startswith('time_') and callable(getattr(htc, method))]
+configs_list = [config_method() for config_method in config_methods]
+align = max(len(c[0]) for cs in configs_list for c in cs)
 
-    @classmethod
-    def setUpClass(cls):
-        print('### Heap ###')
+for configs in configs_list:
+    results = list(perform_time_configs(configs))
 
-    def setUp(self):
-        self.hqs = []
-        for i in range(repeat):
-            hq = list(reversed(range(2600)))
-            heapify(hq)
-            self.hqs.append(hq)
-        self.hs = []
-        for i in range(repeat):
-            h = Heap(reversed(range(2600)))
-            self.hs.append(h)
+    baseline_config = configs[0]
+    baseline_results = results[0]
 
+    print(baseline_config[0].ljust(align), ' '.join('{:f}'.format(result) for result in baseline_results))
 
-class OrderHeapTimeTestCase(BaseTimeTestCaseMixin, unittest.TestCase):
+    for config, results in zip(configs[1:], results[1:]):
+        print(config[0].ljust(align), ' '.join('{:f}'.format(result) for result in results))
+        print('ratio'.ljust(align), ' '.join('{:7.4f}x'.format(result_after/result_before) for result_before, result_after in zip(baseline_results, results)))
 
-    @classmethod
-    def setUpClass(cls):
-        print('### OrderHeap ###')
-
-    @staticmethod
-    def key(x):
-        return -x
-
-    def setUp(self):
-        self.hqs = []
-        for i in range(repeat):
-            hq = list(reversed(range(2600)))
-            heapify(hq)
-            self.hqs.append(hq)
-        self.hs = []
-        for i in range(repeat):
-            h = OrderHeap(reversed(range(2600)), key=self.key)
-            self.hs.append(h)
-
-
-class RemovalHeapTimeTestCase(BaseTimeTestCaseMixin, unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        print('### RemovalHeap ###')
-
-    def setUp(self):
-        self.hqs = []
-        for i in range(repeat):
-            hq = list(reversed(range(2600)))
-            heapify(hq)
-            self.hqs.append(hq)
-        self.hs = []
-        for i in range(repeat):
-            h = RemovalHeap(reversed(range(2600)))
-            self.hs.append(h)
-
-
-class XHeapTimeTestCase(BaseTimeTestCaseMixin, unittest.TestCase):
-
-    @classmethod
-    def setUpClass(cls):
-        print('### OrderHeap ###')
-
-    @staticmethod
-    def key(x):
-        return -x
-
-    def setUp(self):
-        self.hqs = []
-        for i in range(repeat):
-            hq = list(reversed(range(2600)))
-            heapify(hq)
-            self.hqs.append(hq)
-        self.hs = []
-        for i in range(repeat):
-            h = XHeap(reversed(range(2600)), key=self.key)
-            self.hs.append(h)
-
-
-@contextmanager
-def print_time(label):
-    import time
-    start = time.time()
-    yield
-    end = time.time()
-    print('{: <18} - {:8.4f}usec'.format(label, (end - start) * repeat))
+    print('---------------------------------')
