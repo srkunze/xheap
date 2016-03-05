@@ -182,7 +182,7 @@ class RemovalHeapTestCase(HeapBaseTestCase):
 
     def test_init(self):
         self.assertHeap([], [], RemovalHeap())
-        self.assertHeap([], [], RemovalHeap(set()))
+        self.assertHeap([], [], RemovalHeap([]))
         self.assertHeap(ascii_uppercase, [], RemovalHeap(ascii_uppercase))
 
     def test_check(self):
@@ -287,12 +287,12 @@ class XHeapTestCase(HeapBaseTestCase):
         return -ord(x)
 
     def test_init(self):
-        self.assertSetEqual(set(), set(XHeap(key=self.key)))
-        self.assertSetEqual(set(), set(XHeap(set(), key=self.key)))
-        self.assertSetEqual(set(ascii_uppercase), set(XHeap(ascii_uppercase, key=self.key)))
+        self.assertHeap([], [], XHeap(key=self.key))
+        self.assertHeap([], [], XHeap([], key=self.key))
+        self.assertHeap(ascii_uppercase, [], XHeap(ascii_uppercase, key=self.key))
 
     def test_check(self):
-        XHeap([], key=self.key).check()
+        XHeap(key=self.key).check()
         XHeap(ascii_uppercase, key=self.key).check()
         XHeap(reversed(ascii_uppercase), key=self.key).check()
 
