@@ -307,59 +307,78 @@ class XHeapTestCase(HeapBaseTestCase):
 
     def test_push(self):
         heap = XHeap([], key=self.key)
+        wanted = set()
+        not_wanted = set(ascii_uppercase)
         for c in reversed(ascii_uppercase):
+            wanted.add(c)
+            not_wanted.remove(c)
             heap.push(c)
-            heap.check()
-        self.assertSetEqual(set(ascii_uppercase), set(heap))
+            self.assertHeap(wanted, not_wanted, heap)
+        self.assertHeap(ascii_uppercase, [], heap)
 
     def test_pop(self):
         heap = XHeap(reversed(ascii_uppercase), key=self.key)
+        wanted = set(ascii_uppercase)
+        not_wanted = set()
         sorted_items = []
         for c in reversed(ascii_uppercase):
-            popped_item = heap.pop()
-            heap.check()
-            self.assertEqual(c, popped_item)
-            sorted_items.append(popped_item)
+            wanted.remove(c)
+            not_wanted.add(c)
+            self.assertEqual(c, heap.pop())
+            self.assertHeap(wanted, not_wanted, heap)
+            sorted_items.append(c)
         self.assertSequenceEqual(list(reversed(ascii_uppercase)), sorted_items)
-        self.assertSetEqual(set(), set(heap))
+        self.assertHeap([], ascii_uppercase, heap)
 
     def test_remove(self):
         heap = XHeap(reversed(ascii_uppercase), key=self.key)
+        wanted = set(ascii_uppercase)
+        not_wanted = set()
         for c in reversed(ascii_uppercase):
-            wanted = set(heap)
             wanted.remove(c)
+            not_wanted.add(c)
             heap.remove(c)
-            heap.check()
-            self.assertSetEqual(wanted, set(heap))
-        self.assertSetEqual(set(), set(heap))
+            self.assertHeap(wanted, not_wanted, heap)
+        self.assertHeap([], ascii_uppercase, heap)
 
     def test_poppush(self):
         heap = XHeap(reversed(ascii_lowercase), key=self.key)
+        wanted = set(ascii_lowercase)
+        not_wanted = set()
         for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
-            popped_item = heap.poppush(u)
-            heap.check()
-            self.assertEqual(l, popped_item)
-        self.assertSetEqual(set(ascii_uppercase), set(heap))
+            wanted.add(u)
+            wanted.remove(l)
+            not_wanted.add(l)
+            self.assertEqual(l, heap.poppush(u))
+            self.assertHeap(wanted, not_wanted, heap)
+        self.assertHeap(ascii_uppercase, ascii_lowercase, heap)
 
     def test_replace(self):
         heap = XHeap(reversed(ascii_lowercase), key=self.key)
+        wanted = set(ascii_lowercase)
+        not_wanted = set()
         for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
-            popped_item = heap.replace(u)
-            heap.check()
-            self.assertEqual(l, popped_item)
-        self.assertSetEqual(set(ascii_uppercase), set(heap))
+            wanted.add(u)
+            wanted.remove(l)
+            not_wanted.add(l)
+            self.assertEqual(l, heap.replace(u))
+            self.assertHeap(wanted, not_wanted, heap)
+        self.assertHeap(ascii_uppercase, ascii_lowercase, heap)
 
     def test_pushpop_on_empty_heap(self):
-        heap = XHeap(key=self.key)
-        self.assertEqual('A', heap.pushpop('A'))
+        self.assertEqual('A', XHeap(key=self.key).pushpop('A'))
 
     def test_pushpop(self):
         heap = XHeap(reversed(ascii_lowercase), key=self.key)
+        wanted = set(ascii_lowercase)
+        not_wanted = set()
         for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
-            popped_item = heap.pushpop(u)
-            heap.check()
-            self.assertEqual(l, popped_item)
-        self.assertSetEqual(set(ascii_uppercase), set(heap))
+            wanted.add(u)
+            wanted.remove(l)
+            not_wanted.add(l)
+            self.assertEqual(l, heap.pushpop(u))
+            self.assertHeap(wanted, not_wanted, heap)
+        self.assertHeap(ascii_uppercase, ascii_lowercase, heap)
 
     def test_setslice_not_implemented(self):
         heap = XHeap(reversed(ascii_uppercase), key=self.key)
