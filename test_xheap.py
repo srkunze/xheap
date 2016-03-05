@@ -2,6 +2,7 @@
 
 from __future__ import unicode_literals
 
+import re
 import unittest
 from string import ascii_uppercase, ascii_lowercase
 
@@ -97,6 +98,10 @@ class HeapTestCase(HeapBaseTestCase):
         heap = Heap(reversed(ascii_uppercase))
         self.assertRaises(NotImplementedError, heap.__setslice__, 0, 0, [])
 
+    def test_repr(self):
+        heap = Heap(reversed(ascii_uppercase))
+        self.assertHeap(heap, [], eval(repr(heap)))
+
 
 class OrderHeapTestCase(HeapBaseTestCase):
 
@@ -176,6 +181,10 @@ class OrderHeapTestCase(HeapBaseTestCase):
     def test_setslice_not_implemented(self):
         heap = OrderHeap(reversed(ascii_uppercase), key=self.key)
         self.assertRaises(NotImplementedError, heap.__setslice__, 0, 0, [])
+
+    def test_repr(self):
+        heap = OrderHeap(reversed(ascii_uppercase), key=self.key)
+        self.assertHeap(heap, [], eval(re.sub(r'key=<.*>', 'key=self.key', repr(heap))))
 
 
 class RemovalHeapTestCase(HeapBaseTestCase):
@@ -278,6 +287,10 @@ class RemovalHeapTestCase(HeapBaseTestCase):
     def test_setslice_not_implemented(self):
         heap = RemovalHeap(reversed(ascii_uppercase))
         self.assertRaises(NotImplementedError, heap.__setslice__, 0, 0, [])
+
+    def test_repr(self):
+        heap = RemovalHeap(reversed(ascii_uppercase))
+        self.assertHeap(heap, [], eval(repr(heap)))
 
 
 class XHeapTestCase(HeapBaseTestCase):
@@ -383,3 +396,7 @@ class XHeapTestCase(HeapBaseTestCase):
     def test_setslice_not_implemented(self):
         heap = XHeap(reversed(ascii_uppercase), key=self.key)
         self.assertRaises(NotImplementedError, heap.__setslice__, 0, 0, [])
+
+    def test_repr(self):
+        heap = XHeap(reversed(ascii_uppercase), key=self.key)
+        self.assertHeap(heap, [], eval(re.sub(r'key=<.*>', 'key=self.key', repr(heap))))
