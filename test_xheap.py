@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 import re
 import unittest
-from string import ascii_uppercase, ascii_lowercase
+from string import ascii_uppercase, ascii_lowercase, digits
 
 from xheap import Heap, InvalidHeapError, OrderHeap, RemovalHeap, XHeap
 
@@ -368,17 +368,28 @@ class XHeapTestCase(HeapBaseTestCase):
         XHeap(ascii_uppercase, key=self.key).check()
         XHeap(reversed(ascii_uppercase), key=self.key).check()
 
+    @property
+    def empty_heap(self):
+        return XHeap(key=self.key)
+
+    @property
+    def filled_heap(self):
+        heap = XHeap(digits + ascii_uppercase, key=self.key)
+        for c in digits:
+            heap.remove(c)
+        return heap
+
     def test_check_variant_invalid(self):
-        heap = XHeap(ascii_uppercase, key=self.key)
+        heap = self.filled_heap
         heap[3] = (self.key('t'), 't')
         self.assertRaises(InvalidHeapError, heap.check)
 
     def test_peek(self):
-        heap = XHeap(reversed(ascii_uppercase), key=self.key)
+        heap = self.filled_heap
         self.assertEqual('Z', heap.peek())
 
     def test_push(self):
-        heap = XHeap([], key=self.key)
+        heap = self.empty_heap
         wanted = set()
         not_wanted = set(ascii_uppercase)
         for c in reversed(ascii_uppercase):
@@ -392,7 +403,7 @@ class XHeapTestCase(HeapBaseTestCase):
         self.assertRaises(RuntimeError, XHeap(['A'], key=self.key).push, 'A')
 
     def test_pop(self):
-        heap = XHeap(reversed(ascii_uppercase), key=self.key)
+        heap = self.filled_heap
         wanted = set(ascii_uppercase)
         not_wanted = set()
         sorted_items = []
