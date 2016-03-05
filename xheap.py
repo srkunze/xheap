@@ -95,7 +95,7 @@ class OrderHeap(Heap):
         return (item_tuple[1] for item_tuple in super(Heap, self).__iter__())
 
     def __contains__(self, item):
-        return any(heap_item is item for heap_item in self)
+        return item in iter(self)
 
     def __repr__(self):
         return 'OrderHeap({content}, key={key})'.format(content=list(self), key=self.key)
