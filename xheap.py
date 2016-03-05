@@ -157,7 +157,7 @@ class RemovalHeap(Heap):
             self.heapify()
 
     def __iter__(self):
-        return (item for item in super(Heap, self).__iter__() if item in self._item_set)
+        return iter(self._item_set)
 
     def __contains__(self, item):
         return item in self._item_set
