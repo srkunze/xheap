@@ -206,10 +206,10 @@ class OrderHeapTestCase(HeapBaseTestCase):
         wanted = set(ascii_lowercase)
         not_wanted = set()
         for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
+            self.assertEqual(l, heap.pushpop(u))
             wanted.add(u)
             wanted.remove(l)
             not_wanted.add(l)
-            self.assertEqual(l, heap.pushpop(u))
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, ascii_lowercase, heap)
 
@@ -256,9 +256,9 @@ class RemovalHeapTestCase(HeapBaseTestCase):
         wanted = set()
         not_wanted = set(ascii_uppercase)
         for c in reversed(ascii_uppercase):
+            heap.push(c)
             wanted.add(c)
             not_wanted.remove(c)
-            heap.push(c)
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, [], heap)
 
@@ -268,9 +268,9 @@ class RemovalHeapTestCase(HeapBaseTestCase):
         not_wanted = set()
         sorted_items = []
         for c in ascii_uppercase:
+            self.assertEqual(c, heap.pop())
             wanted.remove(c)
             not_wanted.add(c)
-            self.assertEqual(c, heap.pop())
             self.assertHeap(wanted, not_wanted, heap)
             sorted_items.append(c)
         self.assertSequenceEqual(ascii_uppercase, sorted_items)
@@ -281,9 +281,9 @@ class RemovalHeapTestCase(HeapBaseTestCase):
         wanted = set(ascii_uppercase)
         not_wanted = set()
         for c in reversed(ascii_uppercase):
+            heap.remove(c)
             wanted.remove(c)
             not_wanted.add(c)
-            heap.remove(c)
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap([], ascii_uppercase, heap)
 
@@ -292,10 +292,10 @@ class RemovalHeapTestCase(HeapBaseTestCase):
         wanted = set(ascii_uppercase)
         not_wanted = set()
         for u, l in zip(ascii_uppercase, ascii_lowercase):
+            self.assertEqual(u, heap.poppush(l))
             wanted.add(l)
             wanted.remove(u)
             not_wanted.add(u)
-            self.assertEqual(u, heap.poppush(l))
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_lowercase, ascii_uppercase, heap)
 
@@ -304,10 +304,10 @@ class RemovalHeapTestCase(HeapBaseTestCase):
         wanted = set(ascii_uppercase)
         not_wanted = set()
         for u, l in zip(ascii_uppercase, ascii_lowercase):
+            self.assertEqual(u, heap.replace(l))
             wanted.add(l)
             wanted.remove(u)
             not_wanted.add(u)
-            self.assertEqual(u, heap.replace(l))
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_lowercase, ascii_uppercase, heap)
 
@@ -319,10 +319,10 @@ class RemovalHeapTestCase(HeapBaseTestCase):
         wanted = set(ascii_uppercase)
         not_wanted = set()
         for u, l in zip(ascii_uppercase, ascii_lowercase):
+            self.assertEqual(u, heap.pushpop(l))
             wanted.add(l)
             wanted.remove(u)
             not_wanted.add(u)
-            self.assertEqual(u, heap.pushpop(l))
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_lowercase, ascii_uppercase, heap)
 
@@ -370,9 +370,9 @@ class XHeapTestCase(HeapBaseTestCase):
         wanted = set()
         not_wanted = set(ascii_uppercase)
         for c in reversed(ascii_uppercase):
+            heap.push(c)
             wanted.add(c)
             not_wanted.remove(c)
-            heap.push(c)
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, [], heap)
 
@@ -382,9 +382,9 @@ class XHeapTestCase(HeapBaseTestCase):
         not_wanted = set()
         sorted_items = []
         for c in reversed(ascii_uppercase):
+            self.assertEqual(c, heap.pop())
             wanted.remove(c)
             not_wanted.add(c)
-            self.assertEqual(c, heap.pop())
             self.assertHeap(wanted, not_wanted, heap)
             sorted_items.append(c)
         self.assertSequenceEqual(list(reversed(ascii_uppercase)), sorted_items)
@@ -395,9 +395,9 @@ class XHeapTestCase(HeapBaseTestCase):
         wanted = set(ascii_uppercase)
         not_wanted = set()
         for c in reversed(ascii_uppercase):
+            heap.remove(c)
             wanted.remove(c)
             not_wanted.add(c)
-            heap.remove(c)
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap([], ascii_uppercase, heap)
 
@@ -406,10 +406,10 @@ class XHeapTestCase(HeapBaseTestCase):
         wanted = set(ascii_lowercase)
         not_wanted = set()
         for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
+            self.assertEqual(l, heap.poppush(u))
             wanted.add(u)
             wanted.remove(l)
             not_wanted.add(l)
-            self.assertEqual(l, heap.poppush(u))
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, ascii_lowercase, heap)
 
@@ -418,10 +418,10 @@ class XHeapTestCase(HeapBaseTestCase):
         wanted = set(ascii_lowercase)
         not_wanted = set()
         for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
+            self.assertEqual(l, heap.replace(u))
             wanted.add(u)
             wanted.remove(l)
             not_wanted.add(l)
-            self.assertEqual(l, heap.replace(u))
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, ascii_lowercase, heap)
 
@@ -433,10 +433,10 @@ class XHeapTestCase(HeapBaseTestCase):
         wanted = set(ascii_lowercase)
         not_wanted = set()
         for u, l in reversed(list(zip(ascii_uppercase, ascii_lowercase))):
+            self.assertEqual(l, heap.pushpop(u))
             wanted.add(u)
             wanted.remove(l)
             not_wanted.add(l)
-            self.assertEqual(l, heap.pushpop(u))
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, ascii_lowercase, heap)
 
