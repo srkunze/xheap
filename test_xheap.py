@@ -113,7 +113,10 @@ class OrderHeapTestCase(HeapBaseTestCase):
         self.assertSetEqual(set(), set(OrderHeap(key=self.key)))
         self.assertSetEqual(set(), set(OrderHeap(set(), key=self.key)))
         self.assertSetEqual(set(ascii_uppercase), set(OrderHeap(ascii_uppercase, key=self.key)))
+
+    def test_init_errors(self):
         self.assertRaises(RuntimeError, OrderHeap)
+        self.assertRaises(RuntimeError, OrderHeap, ascii_uppercase)
 
     def test_check(self):
         OrderHeap([], key=self.key).check()
@@ -194,6 +197,9 @@ class RemovalHeapTestCase(HeapBaseTestCase):
         self.assertHeap([], [], RemovalHeap())
         self.assertHeap([], [], RemovalHeap([]))
         self.assertHeap(ascii_uppercase, [], RemovalHeap(ascii_uppercase))
+
+    def test_init_errors(self):
+        self.assertRaises(RuntimeError, RemovalHeap, ascii_uppercase+ascii_uppercase)
 
     def test_check(self):
         RemovalHeap().check()
@@ -304,6 +310,11 @@ class XHeapTestCase(HeapBaseTestCase):
         self.assertHeap([], [], XHeap(key=self.key))
         self.assertHeap([], [], XHeap([], key=self.key))
         self.assertHeap(ascii_uppercase, [], XHeap(ascii_uppercase, key=self.key))
+
+    def test_init_errors(self):
+        self.assertRaises(RuntimeError, XHeap)
+        self.assertRaises(RuntimeError, XHeap, ascii_uppercase+ascii_uppercase)
+        self.assertRaises(RuntimeError, XHeap, ascii_uppercase+ascii_uppercase, key=self.key)
 
     def test_check(self):
         XHeap(key=self.key).check()
