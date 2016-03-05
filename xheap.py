@@ -105,71 +105,52 @@ class RemovalHeap(Heap):
         - you have two queues of same items, pop an item from one and you want to remove it from the other, too
     """
 
+    def __init__(self, iterable=[]):
+        super(RemovalHeap, self).__init__(iterable)
+        self._removed = set()
+
     def push(self, item):
-        if item in self._indexes:
+        if item in self._removed:
             raise RuntimeError('same item not allowed to be inserted twice.')
-        self.append(item)
-        _siftdown(self, 0, len(self)-1)
+        heappush(self, item)
 
     def pop(self):
-        last_item = super(Heap, self).pop()
-        if self:
-            return_item = self[0]
-            self[0] = last_item
-            _siftup(self, 0)
-        else:
-            return_item = last_item
-        del self._indexes[return_item]
+        return_item = heappop(self)
+        while return_item in self._removed:
+            return_item = heappop(self)
+        self.sweep()
         return return_item
 
     def remove(self, item):
-        index = self._indexes[item]
-        last_item = super(Heap, self).pop()
-        if index != len(self):
-            self[index] = last_item
-            _siftdown(self, 0, index)
-            _siftup(self, index)
-        del self._indexes[item]
-
-    def heapify(self):
-        self._indexes = {}
-        heapify(self)
-        self._indexes = self._get_indexes()
+        self._removed.add(item)
+        self.sweep()
 
     def poppush(self, item):
-        return_item = self[0]
-        self[0] = item
-        _siftup(self, 0)
-        del self._indexes[return_item]
-        return return_item
+        while self[0] in self._removed:
+            heappop(self)
+        return heapreplace(self, item)
     replace = poppush
 
     def pushpop(self, item):
-        if self and self[0] < item:
-            item, self[0] = self[0], item
-            _siftup(self, 0)
-            del self._indexes[item]
-        return item
+        return_item = heappushpop(self, item)
+        while return_item in self._removed:
+            return_item = heappop(self)
+        return return_item
 
-    def check(self):
-        super(RemovalHeap, self).check()
-        self.check_indexes()
+    def sweep(self):
+        if 2*len(self._removed) > super(RemovalHeap, self).__len__():
+            self[:] = list(self)
+            self._removed = set()
+            self.heapify()
 
-    def check_indexes(self):
-        if self._indexes != self._get_indexes():
-            raise InvalidHeapError('_indexes is broken')
+    def __iter__(self):
+        return (item for item in super(Heap, self).__iter__() if item not in self._removed)
 
-    def _get_indexes(self):
-        indexes = {}
-        for index, item in enumerate(self):
-            if item in indexes:
-                raise InvalidHeapError('items are not unique')
-            indexes[item] = index
-        return indexes
+    def __contains__(self, item):
+        return item not in self._removed and super(RemovalHeap, self).__contains__(item)
 
-    def __setitem__(self, key, item):
-        super(RemovalHeap, self).__setitem__(key, item)
-        self._indexes[item] = key
+    def __len__(self):
+        return super(RemovalHeap, self).__len__() - len(self._removed)
 
     def __repr__(self):
         return 'RemovalHeap({content})'.format(content=list(self))
