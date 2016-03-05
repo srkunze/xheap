@@ -213,7 +213,7 @@ class XHeap(Heap):
 
     def sweep(self):
         if 2*len(self._item_set) < super(XHeap, self).__len__():
-            self[:] = list(self)
+            self[:] = (item_tuple for item_tuple in super(XHeap, self).__iter__() if item_tuple[1] in self._item_set)
             self.heapify()
 
     # order + removal
