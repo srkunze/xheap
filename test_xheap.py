@@ -25,9 +25,9 @@ class HeapBaseTestCase(unittest.TestCase):
 class HeapTestCase(HeapBaseTestCase):
 
     def test_init(self):
-        self.assertSetEqual(set(), set(Heap()))
-        self.assertSetEqual(set(), set(Heap(set())))
-        self.assertSetEqual(set(ascii_uppercase), set(Heap(ascii_uppercase)))
+        self.assertHeap([], [], Heap())
+        self.assertHeap([], [], Heap([]))
+        self.assertHeap(ascii_uppercase, [], Heap(ascii_uppercase))
 
     def test_check(self):
         Heap().check()
@@ -46,49 +46,66 @@ class HeapTestCase(HeapBaseTestCase):
 
     def test_push(self):
         heap = Heap()
+        wanted = set()
+        not_wanted = set(ascii_uppercase)
         for c in reversed(ascii_uppercase):
             heap.push(c)
-            heap.check()
-        self.assertSetEqual(set(ascii_uppercase), set(heap))
+            wanted.add(c)
+            not_wanted.remove(c)
+            self.assertHeap(wanted, not_wanted, heap)
+        self.assertHeap(ascii_uppercase, [], heap)
 
     def test_pop(self):
         heap = Heap(reversed(ascii_uppercase))
+        wanted = set(ascii_uppercase)
+        not_wanted = set()
         sorted_items = []
         for c in ascii_uppercase:
-            popped_item = heap.pop()
-            heap.check()
-            self.assertEqual(c, popped_item)
-            sorted_items.append(popped_item)
-        self.assertSequenceEqual(ascii_uppercase, sorted_items)
-        self.assertSetEqual(set(), set(heap))
+            self.assertEqual(c, heap.pop())
+            wanted.remove(c)
+            not_wanted.add(c)
+            self.assertHeap(wanted, not_wanted, heap)
+            sorted_items.append(c)
+        self.assertHeap([], ascii_uppercase, heap)
 
     def test_poppush(self):
         heap = Heap(reversed(ascii_uppercase))
+        wanted = set(ascii_uppercase)
+        not_wanted = set()
         for u, l in zip(ascii_uppercase, ascii_lowercase):
-            popped_item = heap.poppush(l)
-            heap.check()
-            self.assertEqual(u, popped_item)
-        self.assertSetEqual(set(ascii_lowercase), set(heap))
+            self.assertEqual(u, heap.poppush(l))
+            wanted.add(l)
+            wanted.remove(u)
+            not_wanted.add(u)
+            self.assertHeap(wanted, not_wanted, heap)
+        self.assertHeap(ascii_lowercase, ascii_uppercase, heap)
 
     def test_replace(self):
         heap = Heap(reversed(ascii_uppercase))
+        wanted = set(ascii_uppercase)
+        not_wanted = set()
         for u, l in zip(ascii_uppercase, ascii_lowercase):
-            popped_item = heap.replace(l)
-            heap.check()
-            self.assertEqual(u, popped_item)
-        self.assertSetEqual(set(ascii_lowercase), set(heap))
+            self.assertEqual(u, heap.replace(l))
+            wanted.add(l)
+            wanted.remove(u)
+            not_wanted.add(u)
+            self.assertHeap(wanted, not_wanted, heap)
+        self.assertHeap(ascii_lowercase, ascii_uppercase, heap)
 
     def test_pushpop_on_empty_heap(self):
-        heap = Heap()
-        self.assertEqual('A', heap.pushpop('A'))
+        self.assertEqual('A', Heap().pushpop('A'))
 
     def test_pushpop(self):
         heap = Heap(reversed(ascii_uppercase))
+        wanted = set(ascii_uppercase)
+        not_wanted = set()
         for u, l in zip(ascii_uppercase, ascii_lowercase):
-            popped_item = heap.pushpop(l)
-            heap.check()
-            self.assertEqual(u, popped_item)
-        self.assertSetEqual(set(ascii_lowercase), set(heap))
+            self.assertEqual(u, heap.pushpop(l))
+            wanted.add(l)
+            wanted.remove(u)
+            not_wanted.add(u)
+            self.assertHeap(wanted, not_wanted, heap)
+        self.assertHeap(ascii_lowercase, ascii_uppercase, heap)
 
     def test_remove_not_implemented(self):
         heap = Heap(reversed(ascii_uppercase))
