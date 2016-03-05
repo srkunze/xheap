@@ -113,6 +113,7 @@ class OrderHeapTestCase(HeapBaseTestCase):
         self.assertSetEqual(set(), set(OrderHeap(key=self.key)))
         self.assertSetEqual(set(), set(OrderHeap(set(), key=self.key)))
         self.assertSetEqual(set(ascii_uppercase), set(OrderHeap(ascii_uppercase, key=self.key)))
+        self.assertRaises(RuntimeError, OrderHeap)
 
     def test_check(self):
         OrderHeap([], key=self.key).check()
