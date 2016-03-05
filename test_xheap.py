@@ -131,7 +131,7 @@ class OrderHeapTestCase(HeapBaseTestCase):
         self.assertHeap([], [], OrderHeap([], key=self.key))
         self.assertHeap(ascii_uppercase, [], OrderHeap(ascii_uppercase, key=self.key))
 
-    def test_init_errors(self):
+    def test_init_error(self):
         self.assertRaises(RuntimeError, OrderHeap)
         self.assertRaises(RuntimeError, OrderHeap, ascii_uppercase)
 
@@ -233,7 +233,7 @@ class RemovalHeapTestCase(HeapBaseTestCase):
         self.assertHeap([], [], RemovalHeap([]))
         self.assertHeap(ascii_uppercase, [], RemovalHeap(ascii_uppercase))
 
-    def test_init_errors(self):
+    def test_init_error(self):
         self.assertRaises(RuntimeError, RemovalHeap, ascii_uppercase+ascii_uppercase)
 
     def test_check(self):
@@ -261,6 +261,9 @@ class RemovalHeapTestCase(HeapBaseTestCase):
             not_wanted.remove(c)
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, [], heap)
+
+    def test_push_error(self):
+        self.assertRaises(RuntimeError, RemovalHeap(['A']).push, 'A')
 
     def test_pop(self):
         heap = RemovalHeap(reversed(ascii_uppercase))
@@ -299,6 +302,9 @@ class RemovalHeapTestCase(HeapBaseTestCase):
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_lowercase, ascii_uppercase, heap)
 
+    def test_poppush_error(self):
+        self.assertRaises(RuntimeError, RemovalHeap(['A']).poppush, 'A')
+
     def test_replace(self):
         heap = RemovalHeap(reversed(ascii_uppercase))
         wanted = set(ascii_uppercase)
@@ -310,6 +316,9 @@ class RemovalHeapTestCase(HeapBaseTestCase):
             not_wanted.add(u)
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_lowercase, ascii_uppercase, heap)
+
+    def test_replace_error(self):
+        self.assertRaises(RuntimeError, RemovalHeap(['A']).replace, 'A')
 
     def test_pushpop_on_empty_heap(self):
         self.assertEqual('A', RemovalHeap().pushpop('A'))
@@ -325,6 +334,9 @@ class RemovalHeapTestCase(HeapBaseTestCase):
             not_wanted.add(u)
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_lowercase, ascii_uppercase, heap)
+
+    def test_pushpop_error(self):
+        self.assertRaises(RuntimeError, RemovalHeap(['A']).pushpop, 'A')
 
     def test_setslice_not_implemented(self):
         heap = RemovalHeap(reversed(ascii_uppercase))
@@ -346,7 +358,7 @@ class XHeapTestCase(HeapBaseTestCase):
         self.assertHeap([], [], XHeap([], key=self.key))
         self.assertHeap(ascii_uppercase, [], XHeap(ascii_uppercase, key=self.key))
 
-    def test_init_errors(self):
+    def test_init_error(self):
         self.assertRaises(RuntimeError, XHeap)
         self.assertRaises(RuntimeError, XHeap, ascii_uppercase+ascii_uppercase)
         self.assertRaises(RuntimeError, XHeap, ascii_uppercase+ascii_uppercase, key=self.key)
@@ -375,6 +387,9 @@ class XHeapTestCase(HeapBaseTestCase):
             not_wanted.remove(c)
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, [], heap)
+
+    def test_push_error(self):
+        self.assertRaises(RuntimeError, XHeap(['A'], key=self.key).push, 'A')
 
     def test_pop(self):
         heap = XHeap(reversed(ascii_uppercase), key=self.key)
@@ -413,6 +428,9 @@ class XHeapTestCase(HeapBaseTestCase):
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, ascii_lowercase, heap)
 
+    def test_poppush_error(self):
+        self.assertRaises(RuntimeError, XHeap(['A'], key=self.key).poppush, 'A')
+
     def test_replace(self):
         heap = XHeap(reversed(ascii_lowercase), key=self.key)
         wanted = set(ascii_lowercase)
@@ -424,6 +442,9 @@ class XHeapTestCase(HeapBaseTestCase):
             not_wanted.add(l)
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, ascii_lowercase, heap)
+
+    def test_replace_error(self):
+        self.assertRaises(RuntimeError, XHeap(['A'], key=self.key).replace, 'A')
 
     def test_pushpop_on_empty_heap(self):
         self.assertEqual('A', XHeap(key=self.key).pushpop('A'))
@@ -439,6 +460,9 @@ class XHeapTestCase(HeapBaseTestCase):
             not_wanted.add(l)
             self.assertHeap(wanted, not_wanted, heap)
         self.assertHeap(ascii_uppercase, ascii_lowercase, heap)
+
+    def test_pushpop_error(self):
+        self.assertRaises(RuntimeError, XHeap(['A'], key=self.key).pushpop, 'A')
 
     def test_setslice_not_implemented(self):
         heap = XHeap(reversed(ascii_uppercase), key=self.key)
