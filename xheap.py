@@ -2,7 +2,7 @@
 
 from __future__ import unicode_literals
 
-from heapq import heapify, heappushpop, heapreplace, heappop, heappush, _siftdown, _siftup
+from heapq import heapify, heappushpop, heapreplace, heappop, heappush
 
 __version__ = '0.12'
 __version_info__ = (0, 12)
@@ -93,6 +93,9 @@ class OrderHeap(Heap):
 
     def __iter__(self):
         return (item_tuple[1] for item_tuple in super(Heap, self).__iter__())
+
+    def __contains__(self, item):
+        return any(heap_item is item for heap_item in self)
 
     def __repr__(self):
         return 'OrderHeap({content}, key={key})'.format(content=list(self), key=self.key)
