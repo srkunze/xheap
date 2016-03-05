@@ -148,6 +148,7 @@ class RemovalHeap(Heap):
         return_item = heappushpop(self, item)
         while return_item not in self._item_set:
             return_item = heappop(self)
+        self._item_set.remove(return_item)
         return return_item
 
     def sweep(self):
