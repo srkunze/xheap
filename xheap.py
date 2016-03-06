@@ -188,7 +188,11 @@ class XHeap(Heap):
 
     # order
     def peek(self):
-        return self[0][1]
+        return_item = self[0][1]
+        while return_item not in self._item_set:
+            heappop(self)
+            return_item = self[0][1]
+        return return_item
 
     # order + removal
     def push(self, item):
@@ -222,7 +226,7 @@ class XHeap(Heap):
             raise RuntimeError('duplicate item not allowed: {item}'.format(item=item))
         self._item_set.add(item)
         while self[0][1] not in self._item_set:
-            self._item_set.remove(heappop(self)[1])
+            heappop(self)
         return_item = heapreplace(self, (self.key(item), item))[1]
         self._item_set.remove(return_item)
         return return_item
@@ -257,3 +261,6 @@ class XHeap(Heap):
 
 class InvalidHeapError(RuntimeError):
     pass
+
+
+#TODO: why reversed(zip(...)) not working TypeError: argument to reversed() must be a sequence
