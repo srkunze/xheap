@@ -119,8 +119,9 @@ Bad
 ***
 
 - no drawbacks discovered so far ;)
-- needs fix:
+- needs fix/work:
 
+  - item wrapper which allows duplicate items
   - decrease-key+increase-key: another missing use-case of `heapq <https://docs.python.org/3.5/library/heapq.html>`_
   - merge heaps
 
