@@ -118,7 +118,7 @@ Good
 Bad
 ***
 
-- no drawbacks discovered so far ;)
+- no drawbacks discovered so far ;-)
 - needs fix/work:
 
   - item wrapper which allows duplicate items
