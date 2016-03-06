@@ -115,6 +115,13 @@ class RemovalHeap(Heap):
             raise RuntimeError('duplicate items not allowed: {_list}'.format(_list=_list))
         super(RemovalHeap, self).__init__(_list)
 
+    def peek(self):
+        return_item = self[0]
+        while return_item not in self._item_set:
+            heappop(self)
+            return_item = self[0]
+        return return_item
+
     def push(self, item):
         if item in self._item_set:
             raise RuntimeError('duplicate item not allowed: {item}'.format(item=item))
@@ -138,7 +145,7 @@ class RemovalHeap(Heap):
             raise RuntimeError('duplicate item not allowed: {item}'.format(item=item))
         self._item_set.add(item)
         while self[0] not in self._item_set:
-            self._item_set.remove(heappop(self))
+            heappop(self)
         return_item = heapreplace(self, item)
         self._item_set.remove(return_item)
         return return_item
