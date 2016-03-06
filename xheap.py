@@ -202,11 +202,9 @@ class XHeap(Heap):
         self._item_set.add(item)
 
     def pop(self):
-        return_item_tuple = heappop(self)
-        return_item = return_item_tuple[1]
+        return_item = heappop(self)[1]
         while return_item not in self._item_set:
-            return_item_tuple = heappop(self)
-            return_item = return_item_tuple[1]
+            return_item = heappop(self)[1]
         self._item_set.remove(return_item)
         self.sweep()
         return return_item
