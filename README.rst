@@ -63,8 +63,8 @@ Yes, that's what ``RemovalHeap.remove`` is supposed to do.
 Can I specify the order of the heap?
 ------------------------------------
 
-Just imagine two heaps of the very same set of items but you need different sorting for each heap. That is
-what ``OrderHeap`` is designed for:
+Just imagine two heaps of the very same set of items but you need different sorting for each heap. Or
+you need a max-heap instead of a min-heap. That is what ``OrderHeap`` is designed for:
 
 .. code:: python
 

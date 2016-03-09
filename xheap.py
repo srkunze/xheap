@@ -63,7 +63,7 @@ class OrderHeap(Heap):
     """
     OrderHeap is a heap that allows you to specify the sorting criteria which might come in handy for
         - several heaps for the same set of items but different orders
-        - reversing the heap order
+        - reversing the heap order aka max-heap
     """
 
     def __init__(self, iterable=[], key=None):
