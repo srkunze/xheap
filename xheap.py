@@ -266,6 +266,3 @@ class XHeap(Heap):
 
 class InvalidHeapError(RuntimeError):
     pass
-
-
-#TODO: why reversed(zip(...)) not working TypeError: argument to reversed() must be a sequence
