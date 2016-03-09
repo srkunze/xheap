@@ -55,9 +55,6 @@ class Heap(list):
             if self[index] < self[parent_index]:
                 raise InvalidHeapError('heap invariant (heap[{parent_index}] <= heap[{index}]) violated: {parent} !<= {item}'.format(parent=self[parent_index], parent_index=parent_index, item=self[index], index=index))
 
-    def __setslice__(self, i, j, sequence):
-        raise NotImplementedError
-
     def __repr__(self):
         return 'Heap({content})'.format(content=super(Heap, self).__repr__())
 
