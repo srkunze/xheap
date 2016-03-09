@@ -6,7 +6,7 @@ from setuptools import setup
 
 setup(
     name='xheap',
-    version='0.16',
+    version='0.17',
     description='Heap Implementation for Python',
     author='Sven R. Kunze',
     author_email='srkunze@mail.de',
