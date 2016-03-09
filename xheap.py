@@ -264,6 +264,15 @@ class XHeap(Heap):
         return 'XHeap({content}, key={key})'.format(content=list(self), key=self.key)
 
 
+class Item(object):
+
+    def __init__(self, value):
+        self.value = value
+
+    def __lt__(self, other):
+        return self.value < other.value
+
+
 class InvalidHeapError(RuntimeError):
     pass
 
