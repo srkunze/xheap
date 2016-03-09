@@ -111,10 +111,6 @@ class HeapTestCase(HeapBaseTestCase):
         heap = Heap(reversed(ascii_uppercase))
         self.assertRaises(NotImplementedError, heap.remove, 'A')
 
-    def test_setslice_not_implemented(self):
-        heap = Heap(reversed(ascii_uppercase))
-        self.assertRaises(NotImplementedError, heap.__setslice__, 0, 0, [])
-
     def test_repr(self):
         heap = Heap(reversed(ascii_uppercase))
         self.assertHeap(heap, [], eval(repr(heap)))
@@ -216,10 +212,6 @@ class OrderHeapTestCase(HeapBaseTestCase):
     def test_remove_not_implemented(self):
         heap = OrderHeap(reversed(ascii_uppercase), key=self.key)
         self.assertRaises(NotImplementedError, heap.remove, 'A')
-
-    def test_setslice_not_implemented(self):
-        heap = OrderHeap(reversed(ascii_uppercase), key=self.key)
-        self.assertRaises(NotImplementedError, heap.__setslice__, 0, 0, [])
 
     def test_repr(self):
         heap = OrderHeap(reversed(ascii_uppercase), key=self.key)
@@ -344,10 +336,6 @@ class RemovalHeapTestCase(HeapBaseTestCase):
 
     def test_pushpop_error(self):
         self.assertRaises(RuntimeError, self.filled_heap.pushpop, 'A')
-
-    def test_setslice_not_implemented(self):
-        heap = self.filled_heap
-        self.assertRaises(NotImplementedError, heap.__setslice__, 0, 0, [])
 
     def test_repr(self):
         heap = self.filled_heap
@@ -478,10 +466,6 @@ class XHeapTestCase(HeapBaseTestCase):
 
     def test_pushpop_error(self):
         self.assertRaises(RuntimeError, self.filled_heap.pushpop, 'A')
-
-    def test_setslice_not_implemented(self):
-        heap = self.filled_heap
-        self.assertRaises(NotImplementedError, heap.__setslice__, 0, 0, [])
 
     def test_repr(self):
         heap = self.filled_heap

@@ -4,8 +4,8 @@ from __future__ import unicode_literals
 
 from heapq import heapify, heappushpop, heapreplace, heappop, heappush
 
-__version__ = '0.15'
-__version_info__ = (0, 15)
+__version__ = '0.17'
+__version_info__ = (0, 17)
 __all__ = ['Heap', 'OrderHeap', 'RemovalHeap', 'XHeap', 'InvalidHeapError']
 
 
@@ -55,9 +55,6 @@ class Heap(list):
             if self[index] < self[parent_index]:
                 raise InvalidHeapError('heap invariant (heap[{parent_index}] <= heap[{index}]) violated: {parent} !<= {item}'.format(parent=self[parent_index], parent_index=parent_index, item=self[index], index=index))
 
-    def __setslice__(self, i, j, sequence):
-        raise NotImplementedError
-
     def __repr__(self):
         return 'Heap({content})'.format(content=super(Heap, self).__repr__())
 
@@ -66,7 +63,7 @@ class OrderHeap(Heap):
     """
     OrderHeap is a heap that allows you to specify the sorting criteria which might come in handy for
         - several heaps for the same set of items but different orders
-        - reversing the heap order
+        - reversing the heap order aka max-heap
     """
 
     def __init__(self, iterable=[], key=None):
@@ -275,6 +272,3 @@ class Item(object):
 
 class InvalidHeapError(RuntimeError):
     pass
-
-
-#TODO: why reversed(zip(...)) not working TypeError: argument to reversed() must be a sequence
