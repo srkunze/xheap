@@ -12,20 +12,50 @@ class HeapTimeCase(object):
             'init',
             (
                 'heapq',
-                'from heapq import heapify',
-                'heapify(list(reversed(range({size}))))',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from heapq import heapify;'
+                ),
+                'heapify(values)',
                 1,
             ),
             (
                 'Heap',
-                'from xheap import Heap',
-                'Heap(reversed(range({size})))',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from xheap import Heap;'
+                ),
+                'Heap(values)',
                 1,
             ),
             (
                 'RemovalHeap',
-                'from xheap import RemovalHeap',
-                'RemovalHeap(reversed(range({size})))',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from xheap import RemovalHeap;'
+                ),
+                'RemovalHeap(values)',
+                1,
+            ),
+            (
+                'SortedList',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from sortedcontainers import SortedList;'
+                ),
+                'SortedList(values, load=100)',
                 1,
             ),
         ]
@@ -35,20 +65,54 @@ class HeapTimeCase(object):
             'pop',
             (
                 'heapq',
-                'from heapq import heapify, heappop; heap = list(reversed(range({size}))); heapify(heap)',
-                'heappop(heap)',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from heapq import heapify, heappop;'
+                    'heapify(values);'
+                ),
+                'heappop(values)',
                 None,
             ),
             (
                 'Heap',
-                'from xheap import Heap; heap = Heap(reversed(range({size})))',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from xheap import Heap;'
+                    'heap = Heap(values);'
+                ),
                 'heap.pop()',
                 None,
             ),
             (
                 'RemovalHeap',
-                'from xheap import RemovalHeap; heap = RemovalHeap(reversed(range({size})))',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from xheap import RemovalHeap;'
+                    'heap = RemovalHeap(values);'
+                ),
                 'heap.pop()',
+                None,
+            ),
+            (
+                'SortedList',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from sortedcontainers import SortedList;'
+                    'heap = SortedList(values, load=100);'
+                ),
+                'heap.pop(0)',
                 None,
             ),
         ]
@@ -58,20 +122,63 @@ class HeapTimeCase(object):
             'push',
             (
                 'heapq',
-                'from heapq import heapify, heappush; heap = list(reversed(range(0, {size}*4, 4))); heapify(heap); i = 1',
-                'heappush(heap, i); i += 4',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range(0, {size} * 2, 2));'
+                    'random.shuffle(values);'
+                    'from heapq import heapify, heappush;'
+                    'heap = list(values);'
+                    'heapify(heap);'
+                    'random.shuffle(values);'
+                    'i = 0;'
+                ),
+                'heappush(heap, values[i] + 1); i += 1',
                 None,
             ),
             (
                 'Heap',
-                'from xheap import Heap; heap = Heap(reversed(range(0, {size}*4, 4))); i = 1',
-                'heap.push(i); i += 4',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range(0, {size} * 2, 2));'
+                    'random.shuffle(values);'
+                    'from xheap import Heap;'
+                    'heap = Heap(values);'
+                    'random.shuffle(values);'
+                    'i = 0;'
+                ),
+                'heap.push(values[i] + 1); i += 1',
                 None,
             ),
             (
                 'RemovalHeap',
-                'from xheap import RemovalHeap; heap = RemovalHeap(reversed(range(0, {size}*4, 4))); i = 1',
-                'heap.push(i); i += 4',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range(0, {size} * 2, 2));'
+                    'random.shuffle(values);'
+                    'from xheap import RemovalHeap;'
+                    'heap = RemovalHeap(values);'
+                    'random.shuffle(values);'
+                    'i = 0;'
+                ),
+                'heap.push(values[i] + 1); i += 1',
+                None,
+            ),
+            (
+                'SortedList',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range(0, {size} * 2, 2));'
+                    'random.shuffle(values);'
+                    'from sortedcontainers import SortedList;'
+                    'heap = SortedList(values, load=100);'
+                    'random.shuffle(values);'
+                    'i = 0;'
+                ),
+                'heap.add(values[i] + 1); i += 1',
                 None,
             ),
         ]
@@ -84,20 +191,50 @@ class OrderHeapTimeCase(object):
             'init',
             (
                 'heapq',
-                'from heapq import heapify',
-                'heapify(list(map(lambda x: (-x, x), range({size}))))',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = [(-x, x) for x in range({size})];'
+                    'random.shuffle(values);'
+                    'from heapq import heapify;'
+                ),
+                'heapify(values)',
                 1,
             ),
             (
                 'OrderHeap',
-                'from xheap import OrderHeap',
-                'OrderHeap(range({size}), key=lambda x: -x)',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from xheap import OrderHeap;'
+                ),
+                'OrderHeap(values, key=lambda x: -x)',
                 1,
             ),
             (
                 'XHeap',
-                'from xheap import XHeap',
-                'XHeap(range({size}), key=lambda x: -x)',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from xheap import XHeap;'
+                ),
+                'XHeap(values, key=lambda x: -x)',
+                1,
+            ),
+            (
+                'SortedList',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from sortedcontainers import SortedList;'
+                ),
+                'SortedList(values, key=lambda x: -x, load=100)',
                 1,
             ),
         ]
@@ -107,20 +244,50 @@ class OrderHeapTimeCase(object):
             'pop',
             (
                 'heapq',
-                'from heapq import heapify, heappop; heap = list(map(lambda x: (-x, x), range({size}))); heapify(heap)',
-                'heappop(heap)[1]',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = [(-x, x) for x in range({size})];'
+                    'from heapq import heapify, heappop;'
+                    'heapify(values);'
+                ),
+                'heappop(values)[1]',
                 None,
             ),
             (
                 'OrderHeap',
-                'from xheap import OrderHeap; heap = OrderHeap(range({size}), key=lambda x: -x)',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'from xheap import OrderHeap;'
+                    'heap = OrderHeap(values, key=lambda x: -x);'
+                ),
                 'heap.pop()',
                 None,
             ),
             (
                 'XHeap',
-                'from xheap import XHeap; heap = XHeap(range({size}), key=lambda x: -x)',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'from xheap import XHeap;'
+                    'heap = XHeap(values, key=lambda x: -x);'
+                ),
                 'heap.pop()',
+                None,
+            ),
+            (
+                'SortedList',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'from sortedcontainers import SortedList;'
+                    'heap = SortedList(values, key=lambda x: -x, load=100);'
+                ),
+                'heap.pop(0)',
                 None,
             ),
         ]
@@ -130,20 +297,63 @@ class OrderHeapTimeCase(object):
             'push',
             (
                 'heapq',
-                'from heapq import heapify, heappush; heap = list(map(lambda x: (-x, x), range(0, {size}*4, 4))); heapify(heap); i = 1',
-                'heappush(heap, (-i, i)); i += 4',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = [(-x, x) for x in range(0, {size} * 2, 2)];'
+                    'random.shuffle(values);'
+                    'from heapq import heapify, heappush;'
+                    'heap = list(values);'
+                    'heapify(heap);'
+                    'random.shuffle(values);'
+                    'i = 0;'
+                ),
+                'heappush(heap, (values[i][0] - 1, values[i][1] + 1)); i += 1',
                 None,
             ),
             (
                 'OrderHeap',
-                'from xheap import OrderHeap; heap = OrderHeap(range(0, {size}*4, 4), key=lambda x: -x); i = 1',
-                'heap.push(i); i += 4',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range(0, {size} * 2, 2));'
+                    'random.shuffle(values);'
+                    'from xheap import OrderHeap;'
+                    'heap = OrderHeap(values, key=lambda x: -x);'
+                    'random.shuffle(values);'
+                    'i = 0;'
+                ),
+                'heap.push(values[i] + 1); i += 1',
                 None,
             ),
             (
                 'XHeap',
-                'from xheap import XHeap; heap = XHeap(range(0, {size}*4, 4), key=lambda x: -x); i = 1',
-                'heap.push(i); i += 4',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range(0, {size} * 2, 2));'
+                    'random.shuffle(values);'
+                    'from xheap import XHeap;'
+                    'heap = XHeap(values, key=lambda x: -x);'
+                    'random.shuffle(values);'
+                    'i = 0;'
+                ),
+                'heap.push(values[i] + 1); i += 1',
+                None,
+            ),
+            (
+                'SortedList',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range(0, {size} * 2, 2));'
+                    'random.shuffle(values);'
+                    'from sortedcontainers import SortedList;'
+                    'heap = SortedList(values, key=lambda x: -x, load=100);'
+                    'random.shuffle(values);'
+                    'i = 0;'
+                ),
+                'heap.add(values[i] + 1); i += 1',
                 None,
             ),
         ]
@@ -156,24 +366,69 @@ class RemovalHeapTimeCase(object):
             'remove',
             (
                 'RemovalHeap',
-                'from xheap import RemovalHeap; heap = RemovalHeap(map(lambda x: (-x, x), reversed(range({size})))); i = {size}//2',
-                'heap.remove((-i, i)); i += 1',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from xheap import RemovalHeap;'
+                    'heap = RemovalHeap((-x, x) for x in values);'
+                    'i = 0;'
+                    'random.shuffle(values);'
+                ),
+                (
+                    'heap.remove((-values[i], values[i]));'
+                    'i += 1;'
+                ),
                 None,
             ),
             (
                 'XHeap',
-                'from xheap import XHeap; heap = XHeap(reversed(range({size})), key=lambda x: -x); i = {size}//2',
-                'heap.remove(i); i += 1',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from xheap import XHeap;'
+                    'heap = XHeap(values, key=lambda x: -x);'
+                    'i = 0;'
+                    'random.shuffle(values);'
+                ),
+                (
+                    'heap.remove(values[i]);'
+                    'i += 1;'
+                ),
+                None,
+            ),
+            (
+                'SortedList',
+                (
+                    'import random;'
+                    'random.seed(0);'
+                    'values = list(range({size}));'
+                    'random.shuffle(values);'
+                    'from sortedcontainers import SortedList;'
+                    'heap = SortedList(values, key=lambda x: -x, load=100);'
+                    'i = 0;'
+                    'random.shuffle(values);'
+                ),
+                (
+                    'heap.remove(values[i]);'
+                    'i += 1;'
+                ),
                 None,
             ),
         ]
 
 
 initial_sizes = [10**3, 10**4, 10**5, 10**6]
-repetitions = 10000
+repetitions = 5
 def perform_time_configs(configs):
     for _, setup, stmt, number in configs:
-        yield [min(repeat(stmt.format(size=size), setup.format(size=size), number=(number or size//32), repeat=repetitions)) for size in initial_sizes]
+        try:
+            yield [min(repeat(stmt.format(size=size), setup.format(size=size), number=(number or size), repeat=repetitions)) for size in initial_sizes]
+        except ImportError as exc:
+            pass
 
 
 for htc in (HeapTimeCase(), OrderHeapTimeCase(), RemovalHeapTimeCase()):
